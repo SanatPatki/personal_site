@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanat Patki - Personal Space</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --white: #ffffff;
+            --dark: #0a0a0a;
+            --gray: #999999;
+        }
+ 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+ 
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--white);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+ 
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+ 
+        /* Header */
+        header {
+            padding: 60px 0 40px;
+            border-bottom: 1px solid #f0f0f0;
+            opacity: 0;
+            animation: fadeInDown 0.8s ease forwards;
+        }
+ 
+        @keyframes fadeInDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+ 
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+ 
+        .header-left {
+            flex: 1;
+        }
+ 
+        h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+ 
+        .tagline {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--gray);
+            margin-top: 8px;
+        }
+ 
+        .header-right {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+ 
+        nav {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+        }
+ 
+        nav a {
+            color: var(--dark);
+            text-decoration: none;
+            margin-left: 30px;
+            transition: opacity 0.3s ease;
+        }
+ 
+        nav a:hover {
+            opacity: 0.5;
+        }
+ 
+        .contact-link {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+        }
+ 
+        .contact-link a {
+            color: var(--dark);
+            text-decoration: none;
+            border-bottom: 1px solid var(--dark);
+            transition: opacity 0.3s ease;
+        }
+ 
+        .contact-link a:hover {
+            opacity: 0.5;
+        }
+ 
+        /* Social Icons */
+        .social-icons {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+ 
+        .social-icons a {
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            transition: opacity 0.3s ease;
+        }
+ 
+        .social-icons a:hover {
+            opacity: 0.5;
+        }
+ 
+        .social-icons svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+ 
+        /* About Section */
+        .about {
+            padding: 80px 0;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 0.2s forwards;
+        }
+ 
+        @keyframes fadeIn {
+            to { opacity: 1; }
+            from { opacity: 0; }
+        }
+ 
+        .about-grid {
+            max-width: 800px;
+        }
+ 
+        .about-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+ 
+        .about-content h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 400;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+        }
+ 
+        .about-content p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+ 
+        /* Things I Like Section */
+        .things-section {
+            padding: 80px 0 120px;
+        }
+ 
+        .section-header {
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 0.4s;
+        }
+ 
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+ 
+        .section-header h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 400;
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
+        }
+ 
+        .section-header p {
+            font-size: 1rem;
+            color: var(--gray);
+        }
+ 
+        /* Instagram Grid - 3 columns */
+        .instagram-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 60px;
+        }
+ 
+        .grid-item {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            background: #f8f8f8;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeIn 0.6s ease forwards;
+        }
+ 
+        .grid-item:nth-child(1) { animation-delay: 0.1s; }
+        .grid-item:nth-child(2) { animation-delay: 0.15s; }
+        .grid-item:nth-child(3) { animation-delay: 0.2s; }
+        .grid-item:nth-child(4) { animation-delay: 0.25s; }
+        .grid-item:nth-child(5) { animation-delay: 0.3s; }
+        .grid-item:nth-child(6) { animation-delay: 0.35s; }
+        .grid-item:nth-child(7) { animation-delay: 0.4s; }
+        .grid-item:nth-child(8) { animation-delay: 0.45s; }
+        .grid-item:nth-child(9) { animation-delay: 0.5s; }
+ 
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+ 
+        .grid-item:hover img {
+            opacity: 0.85;
+        }
+ 
+        .grid-item-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+ 
+        .grid-item:hover .grid-item-overlay {
+            opacity: 1;
+        }
+ 
+        .grid-item-caption {
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 400;
+            text-align: center;
+        }
+ 
+        /* Upload placeholder */
+        .upload-placeholder {
+            border: 1px solid #e0e0e0;
+            background: #fafafa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            transition: all 0.3s ease;
+        }
+ 
+        .upload-placeholder:hover {
+            border-color: var(--dark);
+            background: #f5f5f5;
+        }
+ 
+        .upload-placeholder svg {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 12px;
+            stroke: var(--gray);
+            transition: stroke 0.3s ease;
+        }
+ 
+        .upload-placeholder:hover svg {
+            stroke: var(--dark);
+        }
+ 
+        .upload-text {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+ 
+        /* Footer */
+        footer {
+            padding: 60px 0 40px;
+            text-align: center;
+            border-top: 1px solid #f0f0f0;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+ 
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+ 
+        .footer-links a {
+            color: var(--dark);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+ 
+        .footer-links a:hover {
+            opacity: 0.5;
+        }
+ 
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+ 
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+ 
+            .header-right {
+                width: 100%;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+ 
+            nav {
+                display: flex;
+                gap: 20px;
+            }
+ 
+            nav a {
+                margin-left: 0;
+            }
+ 
+            .instagram-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>Your Name</h1>
+                    <p class="tagline">CS + Math</p>
+                </div>
+                <div class="header-right">
+                    <nav>
+                        <a href="index.html">Home</a>
+                        <a href="projects.html">Projects</a>
+                    </nav>
+                    <div class="social-icons">
+                        <a href="https://linkedin.com/in/YOUR-USERNAME" target="_blank" aria-label="LinkedIn">
+                            <!-- LinkedIn icon -->
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                        <a href="https://github.com/YOUR-USERNAME" target="_blank" aria-label="GitHub">
+                            <!-- GitHub icon -->
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="contact-link">
+                        <a href="mailto:hello@yoursite.com">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+ 
+        <section class="about">
+            <div class="about-grid">
+                <div class="about-label">About</div>
+                <div class="about-content">
+                    <h2>Creating thoughtful experiences through design and technology.</h2>
+                    <p>I focus on the intersection of form and function, building things that are both beautiful and useful. When I'm not working, I collect moments and ideas that inspire me.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+ 
+    <section class="things-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Things I Like</h2>
+                <p>A collection of inspiration</p>
+            </div>
+ 
+            <div class="instagram-grid">
+                <div class="grid-item">
+                    <img src="ASAP_Rocky_–_Sundress.png" alt="Music">
+                    <div class="grid-item-overlay">
+                        <div class="grid-item-caption">Sundress</div>
+                    </div>
+                </div>
+                
+                <div class="grid-item">
+                    <img src="spiderman2.png" alt="Show">
+                    <div class="grid-item-overlay">
+                        <div class="grid-item-caption">Spiderman</div>
+                    </div>
+                </div>
+ 
+                <div class="grid-item">
+                    <img src="vagabond.png" alt="Manga">
+                    <div class="grid-item-overlay">
+                        <div class="grid-item-caption">Vagabond</div>
+                    </div>
+                </div>
+ 
+                <div class="grid-item">
+                    <img src="botw.png" alt="Books">
+                    <div class="grid-item-overlay">
+                        <div class="grid-item-caption">Breath of the Wild</div>
+                    </div>
+                </div>
+ 
+                <div class="grid-item">
+                    <img src="stevelacy.webp" alt="Nature">
+                    <div class="grid-item-overlay">
+                        <div class="grid-item-caption">Gemini</div>
+                    </div>
+                </div>
+ 
+                <div class="grid-item">
+                    <img src="drmanhatten.png" alt="Art">
+                    <div class="grid-item-overlay">
+                        <div class="grid-item-caption">Watchmen</div>
+                    </div>
+                </div>
+ 
+                <div class="grid-item">
+                    <img src="jojos.png" alt="Music">
+                    <div class="grid-item-overlay">
+                        <div class="grid-item-caption">Steel Ball Run</div>
+                    </div>
+                </div>
+ 
+                <div class="grid-item">
+                    <img src="3b1b.png" alt="Technology">
+                    <div class="grid-item-overlay">
+                        <div class="grid-item-caption">3Blue1Brown</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+ 
+    <div class="container">
+        <footer>
+            <div class="footer-links">
+                <a href="mailto:hello@yoursite.com">Email</a>
+                <a href="https://linkedin.com/in/YOUR-USERNAME" target="_blank">LinkedIn</a>
+                <a href="https://github.com/YOUR-USERNAME" target="_blank">GitHub</a>
+            </div>
+            <p>© 2024 Sanat Patki. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
