@@ -488,6 +488,73 @@
             </div>
         </div>
     </section>
+
+    <div style="text-align: center; margin-top: -60px;">
+        <style>
+  #gh-contrib-widget { font-family: 'DM Mono'; padding: 1rem; background: #f5f0e8; border-radius: 10px; display: inline-flex; flex-direction: column; align-items: center; max-width: fit-content; box-sizing: border-box; }
+#gh-contrib-widget h3 { margin: 0 0 0.5rem; font-size: 14px; color: #6b5e4e; font-weight: 400; }
+  #gh-graph { display: flex; gap: 3px; }
+  .gh-col { display: flex; flex-direction: column; gap: 3px; }
+  .gh-cell { width: 12px; height: 12px; border-radius: 2px; }
+  #gh-legend { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 11px; color: #6b5e4e; }
+  #gh-legend div { width: 12px; height: 12px; border-radius: 2px; }
+  #gh-status { font-size: 12px; color: #6b5e4e; margin-top: 4px; }
+</style>
+
+<div id="gh-contrib-widget">
+  <h3>GitHub contributions — SanatPatki</h3>
+  <div id="gh-graph"></div>
+  <div id="gh-legend">
+    Less
+    <div style="background:#e8e0d0;"></div>
+    <div style="background:#9be9a8;"></div>
+    <div style="background:#40c463;"></div>
+    <div style="background:#30a14e;"></div>
+    <div style="background:#216e39;"></div>
+    More
+  </div>
+  <div id="gh-status">Loading...</div>
+</div>
+
+<script>
+const COLORS = { 0: '#e8e0d0', 1: '#9be9a8', 2: '#40c463', 3: '#30a14e', 4: '#216e39' };
+
+async function loadContributions() {
+  const status = document.getElementById('gh-status');
+  const graph = document.getElementById('gh-graph');
+  try {
+    const res = await fetch('https://github-contributions-api.jogruber.de/v4/SanatPatki?y=last');
+    const data = await res.json();
+    const contributions = data.contributions;
+    const weeks = [];
+    let week = [];
+    contributions.forEach(day => {
+      week.push(day);
+      if (week.length === 7) { weeks.push(week); week = []; }
+    });
+    if (week.length) weeks.push(week);
+    graph.innerHTML = '';
+    weeks.forEach(w => {
+      const col = document.createElement('div');
+      col.className = 'gh-col';
+      w.forEach(day => {
+        const cell = document.createElement('div');
+        cell.className = 'gh-cell';
+        cell.style.background = COLORS[day.level] || COLORS[0];
+        cell.title = `${day.date}: ${day.count} contribution${day.count !== 1 ? 's' : ''}`;
+        col.appendChild(cell);
+      });
+      graph.appendChild(col);
+    });
+    const total = contributions.reduce((sum, d) => sum + d.count, 0);
+    status.textContent = `${total} contributions in the last year`;
+  } catch(e) {
+    status.textContent = 'Could not load contributions.';
+  }
+}
+loadContributions();
+</script>
+    </div>
  
     <div class="container">
         <footer>
