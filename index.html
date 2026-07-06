@@ -5,41 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sanat Patki - Personal Space</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Apply saved theme before paint to avoid a flash -->
+    <script>
+        (function () {
+            var saved = localStorage.getItem('theme');
+            var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (saved === 'dark' || (!saved && prefersDark)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
     <style>
         :root {
-            --white: #ffffff;
-            --dark: #0a0a0a;
+            --bg: #ffffff;
+            --text: #0a0a0a;
             --gray: #999999;
+            --border: #f0f0f0;
+            --surface: #f8f8f8;
+            --surface-alt: #fafafa;
+            --widget-bg: #e8e6e1;
+            --gh-empty: #d4d0c8;
+            --overlay: rgba(0, 0, 0, 0.5);
         }
- 
+
+        [data-theme="dark"] {
+            --bg: #0b0b0c;
+            --text: #ededed;
+            --gray: #8a8a8a;
+            --border: #1c1c1e;
+            --surface: #151517;
+            --surface-alt: #141416;
+            --widget-bg: #151517;
+            --gh-empty: #26262a;
+            --overlay: rgba(0, 0, 0, 0.65);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
- 
+
         body {
             font-family: 'Crimson Pro', serif;
-            background: var(--white);
-            color: var(--dark);
+            background: var(--bg);
+            color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
         }
- 
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 40px;
         }
- 
+
         /* Header */
         header {
             padding: 60px 0 40px;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid var(--border);
             opacity: 0;
             animation: fadeInDown 0.8s ease forwards;
         }
- 
+
         @keyframes fadeInDown {
             to {
                 opacity: 1;
@@ -50,108 +79,139 @@
                 transform: translateY(-20px);
             }
         }
- 
+
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
- 
+
         .header-left {
             flex: 1;
         }
- 
+
         h1 {
             font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 400;
             letter-spacing: -0.02em;
         }
- 
+
         .tagline {
             font-size: 1rem;
             font-weight: 300;
             color: var(--gray);
             margin-top: 8px;
         }
- 
+
         .header-right {
             display: flex;
             gap: 30px;
             align-items: center;
         }
- 
+
         nav {
             font-family: 'DM Mono', monospace;
             font-size: 0.85rem;
         }
- 
+
         nav a {
-            color: var(--dark);
+            color: var(--text);
             text-decoration: none;
             margin-left: 30px;
             transition: opacity 0.3s ease;
         }
- 
+
         nav a:hover {
             opacity: 0.5;
         }
- 
+
         .contact-link {
             font-family: 'DM Mono', monospace;
             font-size: 0.85rem;
         }
- 
+
         .contact-link a {
-            color: var(--dark);
+            color: var(--text);
             text-decoration: none;
-            border-bottom: 1px solid var(--dark);
+            border-bottom: 1px solid var(--text);
             transition: opacity 0.3s ease;
         }
- 
+
         .contact-link a:hover {
             opacity: 0.5;
         }
- 
+
         /* Social Icons */
         .social-icons {
             display: flex;
             gap: 16px;
             align-items: center;
         }
- 
+
         .social-icons a {
-            color: var(--dark);
+            color: var(--text);
             display: flex;
             align-items: center;
             transition: opacity 0.3s ease;
         }
- 
+
         .social-icons a:hover {
             opacity: 0.5;
         }
- 
+
         .social-icons svg {
             width: 20px;
             height: 20px;
             fill: currentColor;
         }
- 
+
+        /* Theme toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            opacity: 0.5;
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .theme-toggle .sun { display: none; }
+        .theme-toggle .moon { display: block; }
+        [data-theme="dark"] .theme-toggle .sun { display: block; }
+        [data-theme="dark"] .theme-toggle .moon { display: none; }
+
         /* About Section */
         .about {
             padding: 80px 0;
             opacity: 0;
             animation: fadeIn 0.8s ease 0.2s forwards;
         }
- 
+
         @keyframes fadeIn {
             to { opacity: 1; }
             from { opacity: 0; }
         }
- 
+
         .about-grid {
             max-width: 800px;
         }
- 
+
         .about-label {
             font-family: 'DM Mono', monospace;
             font-size: 0.75rem;
@@ -160,7 +220,7 @@
             color: var(--gray);
             margin-bottom: 30px;
         }
- 
+
         .about-content h2 {
             font-size: clamp(1.5rem, 3vw, 2rem);
             font-weight: 400;
@@ -168,26 +228,26 @@
             margin-bottom: 20px;
             letter-spacing: -0.01em;
         }
- 
+
         .about-content p {
             font-size: 1.1rem;
             line-height: 1.7;
             margin-bottom: 20px;
             color: var(--gray);
         }
- 
+
         /* Things I Like Section */
         .things-section {
             padding: 80px 0 120px;
         }
- 
+
         .section-header {
             margin-bottom: 60px;
             opacity: 0;
             animation: fadeInUp 0.8s ease forwards;
             animation-delay: 0.4s;
         }
- 
+
         @keyframes fadeInUp {
             to {
                 opacity: 1;
@@ -198,19 +258,19 @@
                 transform: translateY(20px);
             }
         }
- 
+
         .section-header h2 {
             font-size: clamp(1.5rem, 3vw, 2rem);
             font-weight: 400;
             margin-bottom: 10px;
             letter-spacing: -0.01em;
         }
- 
+
         .section-header p {
             font-size: 1rem;
             color: var(--gray);
         }
- 
+
         /* Instagram Grid - 3 columns */
         .instagram-grid {
             display: grid;
@@ -218,17 +278,17 @@
             gap: 16px;
             margin-bottom: 60px;
         }
- 
+
         .grid-item {
             position: relative;
             aspect-ratio: 1;
             overflow: hidden;
-            background: #f8f8f8;
+            background: var(--surface);
             cursor: pointer;
             opacity: 0;
             animation: fadeIn 0.6s ease forwards;
         }
- 
+
         .grid-item:nth-child(1) { animation-delay: 0.1s; }
         .grid-item:nth-child(2) { animation-delay: 0.15s; }
         .grid-item:nth-child(3) { animation-delay: 0.2s; }
@@ -238,22 +298,22 @@
         .grid-item:nth-child(7) { animation-delay: 0.4s; }
         .grid-item:nth-child(8) { animation-delay: 0.45s; }
         .grid-item:nth-child(9) { animation-delay: 0.5s; }
- 
+
         .grid-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: opacity 0.3s ease;
         }
- 
+
         .grid-item:hover img {
             opacity: 0.85;
         }
- 
+
         .grid-item-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: var(--overlay);
             opacity: 0;
             transition: opacity 0.3s ease;
             display: flex;
@@ -261,109 +321,121 @@
             justify-content: center;
             padding: 20px;
         }
- 
+
         .grid-item:hover .grid-item-overlay {
             opacity: 1;
         }
- 
+
         .grid-item-caption {
             color: white;
             font-size: 0.9rem;
             font-weight: 400;
             text-align: center;
         }
- 
-        /* Upload placeholder */
-        .upload-placeholder {
-            border: 1px solid #e0e0e0;
-            background: #fafafa;
-            display: flex;
+
+        /* GitHub contribution widget */
+        .gh-wrap {
+            text-align: center;
+            margin-top: -60px;
+        }
+
+        #gh-contrib-widget {
+            font-family: 'DM Mono', monospace;
+            padding: 1rem;
+            background: var(--widget-bg);
+            border-radius: 10px;
+            display: inline-flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px;
-            transition: all 0.3s ease;
+            max-width: fit-content;
+            box-sizing: border-box;
+            transition: background 0.3s ease;
         }
- 
-        .upload-placeholder:hover {
-            border-color: var(--dark);
-            background: #f5f5f5;
+
+        #gh-contrib-widget h3 {
+            margin: 0 0 0.5rem;
+            font-size: 14px;
+            color: var(--text);
+            font-weight: 400;
         }
- 
-        .upload-placeholder svg {
-            width: 32px;
-            height: 32px;
-            margin-bottom: 12px;
-            stroke: var(--gray);
-            transition: stroke 0.3s ease;
+
+        #gh-graph { display: flex; gap: 3px; }
+        .gh-col { display: flex; flex-direction: column; gap: 3px; }
+        .gh-cell { width: 12px; height: 12px; border-radius: 2px; }
+        .gh-l0 { background: var(--gh-empty); }
+        .gh-l1 { background: #9be9a8; }
+        .gh-l2 { background: #40c463; }
+        .gh-l3 { background: #30a14e; }
+        .gh-l4 { background: #216e39; }
+
+        #gh-legend {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: var(--text);
         }
- 
-        .upload-placeholder:hover svg {
-            stroke: var(--dark);
-        }
- 
-        .upload-text {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--gray);
-        }
- 
+
+        #gh-legend div { width: 12px; height: 12px; border-radius: 2px; }
+        .gh-empty { background: var(--gh-empty); }
+        #gh-status { font-size: 12px; color: var(--text); margin-top: 4px; }
+
         /* Footer */
         footer {
             padding: 60px 0 40px;
             text-align: center;
-            border-top: 1px solid #f0f0f0;
+            border-top: 1px solid var(--border);
             font-family: 'DM Mono', monospace;
             font-size: 0.75rem;
             color: var(--gray);
         }
- 
+
         .footer-links {
             display: flex;
             justify-content: center;
             gap: 30px;
             margin-bottom: 20px;
         }
- 
+
         .footer-links a {
-            color: var(--dark);
+            color: var(--text);
             text-decoration: none;
             transition: opacity 0.3s ease;
         }
- 
+
         .footer-links a:hover {
             opacity: 0.5;
         }
- 
+
         /* Responsive */
         @media (max-width: 768px) {
             .container {
                 padding: 0 20px;
             }
- 
+
             .header-content {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 20px;
             }
- 
+
             .header-right {
                 width: 100%;
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 15px;
             }
- 
+
             nav {
                 display: flex;
                 gap: 20px;
             }
- 
+
             nav a {
                 margin-left: 0;
             }
- 
+
             .instagram-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
@@ -398,31 +470,50 @@
                             </svg>
                         </a>
                     </div>
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
+                        <!-- Moon (shown in light mode) -->
+                        <svg class="moon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                        <!-- Sun (shown in dark mode) -->
+                        <svg class="sun" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="4"/>
+                            <line x1="12" y1="2" x2="12" y2="4"/>
+                            <line x1="12" y1="20" x2="12" y2="22"/>
+                            <line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/>
+                            <line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/>
+                            <line x1="2" y1="12" x2="4" y2="12"/>
+                            <line x1="20" y1="12" x2="22" y2="12"/>
+                            <line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/>
+                            <line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/>
+                        </svg>
+                    </button>
                     <div class="contact-link">
                         <a href="mailto:sanatpatkiwork@gmail.com">Contact</a>
                     </div>
                 </div>
             </div>
         </header>
- 
+
         <section class="about">
             <div class="about-grid">
                 <div class="about-label">About</div>
                 <div class="about-content">
-                    <h2>Creating thoughtful experiences through design and technology.</h2>
-                    <p>I focus on the intersection of form and function, building things that are both beautiful and useful. When I'm not working, I collect moments and ideas that inspire me.</p>
+                    <h2>Machine learning and computer vision, pointed at the people around me.</h2>
+                    <p>I'm most at home teaching computers to see — the practical, sometimes messy work of getting a model to actually make sense of an image or a scene. What keeps me curious is where that work meets everyday life.</p>
+                    <p>Lately I've been building toward community-adjacent technology: taking machine learning and computer vision out of the lab and putting them to work on problems that touch the people around me.</p>
                 </div>
             </div>
         </section>
     </div>
- 
+
     <section class="things-section">
         <div class="container">
             <div class="section-header">
                 <h2>Things I Like</h2>
                 <p>Stuff I find very cool</p>
             </div>
- 
+
             <div class="instagram-grid">
                 <div class="grid-item">
                     <img src="ASAP_Rocky_–_Sundress.png" alt="Music">
@@ -430,49 +521,49 @@
                         <div class="grid-item-caption">ASAP Rocky</div>
                     </div>
                 </div>
-                
+
                 <div class="grid-item">
                     <img src="artemis2.jpg" alt="Show">
                     <div class="grid-item-overlay">
                         <div class="grid-item-caption">Space Exploration</div>
                     </div>
                 </div>
- 
+
                 <div class="grid-item">
                     <img src="vinlandsaga2.png" alt="Manga">
                     <div class="grid-item-overlay">
                         <div class="grid-item-caption">Vinland Saga</div>
                     </div>
                 </div>
- 
+
                 <div class="grid-item">
                     <img src="botw7.png" alt="Books">
                     <div class="grid-item-overlay">
                         <div class="grid-item-caption">Breath of the Wild</div>
                     </div>
                 </div>
- 
+
                 <div class="grid-item">
                     <img src="stevelacy.webp" alt="Nature">
                     <div class="grid-item-overlay">
                         <div class="grid-item-caption">Steve Lacy</div>
                     </div>
                 </div>
- 
+
                 <div class="grid-item">
                     <img src="drmanhatten.png" alt="Art">
                     <div class="grid-item-overlay">
                         <div class="grid-item-caption">Watchmen</div>
                     </div>
                 </div>
- 
+
                 <div class="grid-item">
                     <img src="mfdoom.jpeg" alt="Music">
                     <div class="grid-item-overlay">
                         <div class="grid-item-caption">MF DOOM</div>
                     </div>
                 </div>
- 
+
                 <div class="grid-item">
                     <img src="martianmanhunter2.png" alt="Technology">
                     <div class="grid-item-overlay">
@@ -489,82 +580,82 @@
         </div>
     </section>
 
-    <div style="text-align: center; margin-top: -60px;">
-        <style>
-  #gh-contrib-widget { font-family: 'DM Mono'; padding: 1rem; background: #e8e6e1; border-radius: 10px; display: inline-flex; flex-direction: column; align-items: center; max-width: fit-content; box-sizing: border-box; }
-#gh-contrib-widget h3 { margin: 0 0 0.5rem; font-size: 14px; color: #060504; font-weight: 400; }
-  #gh-graph { display: flex; gap: 3px; }
-  .gh-col { display: flex; flex-direction: column; gap: 3px; }
-  .gh-cell { width: 12px; height: 12px; border-radius: 2px; }
-  #gh-legend { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 11px; color: #060504; }
-  #gh-legend div { width: 12px; height: 12px; border-radius: 2px; }
-  #gh-status { font-size: 12px; color: #060504; margin-top: 4px; }
-</style>
+    <div class="gh-wrap">
+        <div id="gh-contrib-widget">
+            <h3>GitHub contributions — SanatPatki</h3>
+            <div id="gh-graph"></div>
+            <div id="gh-legend">
+                Less
+                <div class="gh-empty"></div>
+                <div style="background:#9be9a8;"></div>
+                <div style="background:#40c463;"></div>
+                <div style="background:#30a14e;"></div>
+                <div style="background:#216e39;"></div>
+                More
+            </div>
+            <div id="gh-status">Loading...</div>
+        </div>
 
-<div id="gh-contrib-widget">
-  <h3>GitHub contributions — SanatPatki</h3>
-  <div id="gh-graph"></div>
-  <div id="gh-legend">
-    Less
-    <div style="background:#d4d0c8;"></div>
-    <div style="background:#9be9a8;"></div>
-    <div style="background:#40c463;"></div>
-    <div style="background:#30a14e;"></div>
-    <div style="background:#216e39;"></div>
-    More
-  </div>
-  <div id="gh-status">Loading...</div>
-</div>
-
-<script>
-const COLORS = { 0: '#d4d0c8', 1: '#9be9a8', 2: '#40c463', 3: '#30a14e', 4: '#216e39' };
-
-async function loadContributions() {
-  const status = document.getElementById('gh-status');
-  const graph = document.getElementById('gh-graph');
-  try {
-    const res = await fetch('https://github-contributions-api.jogruber.de/v4/SanatPatki?y=last');
-    const data = await res.json();
-    const contributions = data.contributions;
-    const weeks = [];
-    let week = [];
-    contributions.forEach(day => {
-      week.push(day);
-      if (week.length === 7) { weeks.push(week); week = []; }
-    });
-    if (week.length) weeks.push(week);
-    graph.innerHTML = '';
-    weeks.forEach(w => {
-      const col = document.createElement('div');
-      col.className = 'gh-col';
-      w.forEach(day => {
-        const cell = document.createElement('div');
-        cell.className = 'gh-cell';
-        cell.style.background = COLORS[day.level] || COLORS[0];
-        cell.title = `${day.date}: ${day.count} contribution${day.count !== 1 ? 's' : ''}`;
-        col.appendChild(cell);
-      });
-      graph.appendChild(col);
-    });
-    const total = contributions.reduce((sum, d) => sum + d.count, 0);
-    status.textContent = `${total} contributions in the last year`;
-  } catch(e) {
-    status.textContent = 'Could not load contributions.';
-  }
-}
-loadContributions();
-</script>
+        <script>
+            async function loadContributions() {
+                const status = document.getElementById('gh-status');
+                const graph = document.getElementById('gh-graph');
+                try {
+                    const res = await fetch('https://github-contributions-api.jogruber.de/v4/SanatPatki?y=last');
+                    const data = await res.json();
+                    const contributions = data.contributions;
+                    const weeks = [];
+                    let week = [];
+                    contributions.forEach(day => {
+                        week.push(day);
+                        if (week.length === 7) { weeks.push(week); week = []; }
+                    });
+                    if (week.length) weeks.push(week);
+                    graph.innerHTML = '';
+                    weeks.forEach(w => {
+                        const col = document.createElement('div');
+                        col.className = 'gh-col';
+                        w.forEach(day => {
+                            const cell = document.createElement('div');
+                            const level = Math.max(0, Math.min(4, day.level || 0));
+                            cell.className = 'gh-cell gh-l' + level;
+                            cell.title = `${day.date}: ${day.count} contribution${day.count !== 1 ? 's' : ''}`;
+                            col.appendChild(cell);
+                        });
+                        graph.appendChild(col);
+                    });
+                    const total = contributions.reduce((sum, d) => sum + d.count, 0);
+                    status.textContent = `${total} contributions in the last year`;
+                } catch (e) {
+                    status.textContent = 'Could not load contributions.';
+                }
+            }
+            loadContributions();
+        </script>
     </div>
- 
+
     <div class="container">
         <footer>
             <div class="footer-links">
-                <a href="mailto:@sanatpatkiwork@gmail.com">Email</a>
+                <a href="mailto:sanatpatkiwork@gmail.com">Email</a>
                 <a href="https://linkedin.com/in/sanat-patki-85a817360" target="_blank">LinkedIn</a>
                 <a href="https://github.com/SanatPatki" target="_blank">GitHub</a>
             </div>
             <p>© 2024 Sanat Patki. All rights reserved.</p>
         </footer>
     </div>
+
+    <script>
+        function toggleTheme() {
+            var el = document.documentElement;
+            if (el.getAttribute('data-theme') === 'dark') {
+                el.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            } else {
+                el.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+    </script>
 </body>
 </html>
