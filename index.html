@@ -13,6 +13,10 @@
             if (saved === 'dark' || (!saved && prefersDark)) {
                 document.documentElement.setAttribute('data-theme', 'dark');
             }
+            // If the intro was already dismissed this session, skip it (no flash).
+            if (sessionStorage.getItem('entered') === '1') {
+                document.documentElement.classList.add('landing-done');
+            }
         })();
     </script>
     <style>
@@ -195,6 +199,80 @@
         .theme-toggle .moon { display: block; }
         [data-theme="dark"] .theme-toggle .sun { display: block; }
         [data-theme="dark"] .theme-toggle .moon { display: none; }
+
+        /* Landing / intro overlay (React-powered) */
+        #landing-root {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        #landing-root.exiting {
+            opacity: 0;
+            transform: translateY(-24px);
+            pointer-events: none;
+        }
+
+        .landing-done #landing-root { display: none !important; }
+
+        .landing-inner {
+            opacity: 0;
+            transform: translateY(14px);
+            animation: landingIn 0.9s ease forwards;
+        }
+
+        @keyframes landingIn {
+            to { opacity: 1; transform: none; }
+        }
+
+        .landing-name {
+            font-size: clamp(2.5rem, 8vw, 5.5rem);
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+        }
+
+        .landing-tag {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--gray);
+            margin-top: 18px;
+        }
+
+        .landing-enter {
+            margin-top: 48px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            background: none;
+            color: var(--text);
+            border: 1px solid var(--text);
+            border-radius: 999px;
+            padding: 14px 34px;
+            cursor: pointer;
+            opacity: 0;
+            transition: background 0.3s ease, color 0.3s ease;
+            animation: landingIn 0.9s ease 0.45s forwards;
+        }
+
+        .landing-enter:hover {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        .landing-enter:disabled {
+            cursor: default;
+        }
 
         /* About Section */
         .about {
@@ -444,6 +522,14 @@
     </style>
 </head>
 <body>
+    <!-- React-powered intro overlay. Falls back to a static name if JS is unavailable. -->
+    <noscript><style>#landing-root { display: none !important; }</style></noscript>
+    <div id="landing-root">
+        <div class="landing-inner">
+            <h1 class="landing-name">Sanat Patki</h1>
+        </div>
+    </div>
+
     <div class="container">
         <header>
             <div class="header-content">
@@ -656,6 +742,53 @@
                 localStorage.setItem('theme', 'dark');
             }
         }
+    </script>
+
+    <!-- React (via CDN) powers the intro overlay and its enter transition -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script>
+        (function () {
+            // If the CDN failed to load React, drop the overlay so the site stays usable.
+            if (typeof React === 'undefined' || typeof ReactDOM === 'undefined') {
+                var fallback = document.getElementById('landing-root');
+                if (fallback) fallback.style.display = 'none';
+                return;
+            }
+
+            const { useState, useEffect, createElement: h } = React;
+
+            function Landing() {
+                const [exiting, setExiting] = useState(false);
+
+                // Lock scrolling while the intro is up.
+                useEffect(() => {
+                    document.body.style.overflow = 'hidden';
+                }, []);
+
+                function enter() {
+                    if (exiting) return;
+                    setExiting(true);
+                    const root = document.getElementById('landing-root');
+                    root.classList.add('exiting');
+                    sessionStorage.setItem('entered', '1');
+                    document.body.style.overflow = '';
+                    // Remove the overlay once the fade-out finishes.
+                    setTimeout(function () { root.style.display = 'none'; }, 700);
+                }
+
+                return h('div', { className: 'landing-inner' },
+                    h('h1', { className: 'landing-name' }, 'Sanat Patki'),
+                    h('p', { className: 'landing-tag' }, 'CS + Math'),
+                    h('button', { className: 'landing-enter', onClick: enter, disabled: exiting }, 'Enter →')
+                );
+            }
+
+            // Only mount the intro if it hasn't been dismissed this session.
+            if (!document.documentElement.classList.contains('landing-done')) {
+                ReactDOM.createRoot(document.getElementById('landing-root')).render(h(Landing));
+            }
+        })();
     </script>
 </body>
 </html>
