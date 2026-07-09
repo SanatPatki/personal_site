@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sanat Patki </title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="cursor.css">
     <!-- Apply saved theme before paint to avoid a flash -->
     <script>
         (function () {
@@ -20,6 +21,12 @@
         })();
     </script>
     <style>
+        /* Critical: hide the native cursor immediately so it never flashes on navigation
+           (before the external cursor.css loads). */
+        @media (hover: hover) and (pointer: fine) {
+            html, html * { cursor: none !important; }
+        }
+
         :root {
             --bg: #ffffff;
             --text: #0a0a0a;
@@ -790,5 +797,8 @@
             }
         })();
     </script>
+
+    <!-- Liquid-glass custom cursor -->
+    <script src="cursor.js"></script>
 </body>
 </html>
