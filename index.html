@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sanat Patki </title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="cursor.css">
     <!-- Apply saved theme before paint to avoid a flash -->
     <script>
         (function () {
@@ -21,12 +20,6 @@
         })();
     </script>
     <style>
-        /* Critical: hide the native cursor immediately so it never flashes on navigation
-           (before the external cursor.css loads). */
-        @media (hover: hover) and (pointer: fine) {
-            html, html * { cursor: none !important; }
-        }
-
         :root {
             --bg: #ffffff;
             --text: #0a0a0a;
@@ -356,6 +349,232 @@
             color: var(--gray);
         }
 
+        /* Films Section */
+        .films-section {
+            padding: 60px 0 20px;
+        }
+
+        .films-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+            margin-top: 40px;
+        }
+
+        .film-card {
+            position: relative;
+            aspect-ratio: 2 / 3;
+            border-radius: 14px;
+            overflow: hidden;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeInUp 0.7s ease forwards;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .film-card:nth-child(1) { animation-delay: 0.1s; }
+        .film-card:nth-child(2) { animation-delay: 0.2s; }
+        .film-card:nth-child(3) { animation-delay: 0.3s; }
+        .film-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .film-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 22px 48px rgba(0, 0, 0, 0.26);
+        }
+
+        .film-art { position: absolute; inset: 0; }
+
+        /* Shared film grain + vignette for a stylized poster feel */
+        .film-art::before {
+            content: ''; position: absolute; inset: 0; z-index: 4; pointer-events: none;
+            opacity: 0.12; mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+        .film-art::after {
+            content: ''; position: absolute; inset: 0; z-index: 4; pointer-events: none;
+            background: radial-gradient(135% 115% at 50% 32%, transparent 50%, rgba(0, 0, 0, 0.42) 100%);
+        }
+
+        .film-meta {
+            position: absolute;
+            left: 0; right: 0; bottom: 0;
+            z-index: 5;
+            padding: 20px 18px 18px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.28) 55%, transparent);
+            color: #fff;
+        }
+
+        .film-year {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.85;
+        }
+
+        .film-title {
+            font-family: 'Crimson Pro', serif;
+            font-weight: 600;
+            font-size: 1.4rem;
+            line-height: 1.12;
+            margin-top: 4px;
+            letter-spacing: -0.01em;
+        }
+
+        /* --- Moonlight --- */
+        .moonlight-art {
+            background: linear-gradient(168deg, #04121f 0%, #0c2f52 34%, #274a7d 56%, #5b3c86 78%, #8a3f74 100%);
+        }
+        .moonlight-art .stars {
+            position: absolute; inset: 0; z-index: 1;
+            background-image:
+                radial-gradient(1.6px 1.6px at 18% 16%, rgba(255, 255, 255, 0.8), transparent),
+                radial-gradient(1.4px 1.4px at 72% 11%, rgba(255, 255, 255, 0.55), transparent),
+                radial-gradient(1.2px 1.2px at 44% 24%, rgba(255, 255, 255, 0.6), transparent),
+                radial-gradient(1px 1px at 86% 28%, rgba(255, 255, 255, 0.45), transparent),
+                radial-gradient(1px 1px at 30% 8%, rgba(255, 255, 255, 0.5), transparent);
+        }
+        .moonlight-art .moon {
+            position: absolute; z-index: 2; top: 13%; left: 50%; transform: translateX(-50%);
+            width: 58px; height: 58px; border-radius: 50%;
+            background: radial-gradient(circle at 38% 35%, #eaf3ff, #a9c8e6 60%, #6f97cf);
+            box-shadow: 0 0 42px 12px rgba(150, 190, 255, 0.55), 0 0 100px 34px rgba(80, 120, 200, 0.28);
+        }
+        .moonlight-art .glimmer {
+            position: absolute; z-index: 2; top: 30%; left: 50%; transform: translateX(-50%);
+            width: 22px; height: 40%;
+            background: linear-gradient(to bottom, rgba(190, 215, 255, 0.5), transparent);
+            filter: blur(3px);
+        }
+        .moonlight-art .sea {
+            position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; height: 30%;
+            background: linear-gradient(to top, rgba(4, 10, 26, 0.95), transparent);
+        }
+        .moonlight-art .figure {
+            position: absolute; z-index: 3; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 80%; height: 27%; background: #030811;
+            border-radius: 46% 46% 0 0 / 78% 78% 0 0;
+        }
+        .moonlight-art .figure::before {
+            content: ''; position: absolute; bottom: 74%; left: 50%; transform: translateX(-50%);
+            width: 33%; aspect-ratio: 1; border-radius: 50%; background: #030811;
+        }
+
+        /* --- Isle of Dogs --- */
+        .isle-art {
+            background: linear-gradient(180deg, #efe3c7 0%, #ecd9b4 52%, #e7c99a 52%);
+            overflow: hidden;
+        }
+        .isle-art .rays {
+            position: absolute; z-index: 1; top: 46%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 260%; aspect-ratio: 1; border-radius: 50%;
+            background: repeating-conic-gradient(from 6deg, #de7440 0deg 10deg, transparent 10deg 20deg);
+            opacity: 0.32;
+        }
+        .isle-art .sun {
+            position: absolute; z-index: 2; top: 46%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 78px; height: 78px; border-radius: 50%;
+            background: radial-gradient(circle at 42% 38%, #f0724a, #d94a24);
+            box-shadow: 0 0 0 8px rgba(217, 74, 36, 0.18), 0 0 28px rgba(217, 74, 36, 0.35);
+        }
+        .isle-art .hill {
+            position: absolute; z-index: 3;
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        }
+        .isle-art .hill.h1 { bottom: 40%; left: -14%; width: 66%; height: 20%; background: #9c3f26; }
+        .isle-art .hill.h2 { bottom: 40%; right: -16%; width: 74%; height: 26%; background: #b8502f; }
+        .isle-art .ground {
+            position: absolute; z-index: 3; left: 0; right: 0; bottom: 0; height: 40%;
+            background: linear-gradient(180deg, #a8472a, #8f3a22);
+        }
+        .isle-art .bit {
+            position: absolute; z-index: 5; width: 15px; height: 11px; border-radius: 2px;
+            background: #2f8f83; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+        }
+        .isle-art .bit.b1 { bottom: 11%; left: 20%; transform: rotate(-12deg); }
+        .isle-art .bit.b2 { bottom: 7%; right: 22%; transform: rotate(15deg); background: #e0b755; }
+        .isle-art .bit.b3 { bottom: 22%; right: 32%; transform: rotate(6deg); background: #d9d2c2; }
+
+        /* --- Fight Club --- */
+        .fight-art {
+            background: radial-gradient(120% 95% at 50% 40%, #2a2a30 0%, #141417 60%, #060608 100%);
+        }
+        .fight-art .streak {
+            position: absolute; inset: 0; z-index: 1;
+            background:
+                repeating-linear-gradient(115deg, transparent 0 24px, rgba(255, 255, 255, 0.025) 24px 25px),
+                repeating-linear-gradient(60deg, transparent 0 40px, rgba(0, 0, 0, 0.22) 40px 42px);
+        }
+        .fight-art .glow {
+            position: absolute; z-index: 1; top: 43%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 86%; height: 46%;
+            background: radial-gradient(ellipse at center, rgba(240, 140, 180, 0.3), transparent 68%);
+            filter: blur(8px);
+        }
+        .fight-art .soap {
+            position: absolute; z-index: 5; top: 43%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-8deg);
+            width: 68%; height: 24%; border-radius: 14px;
+            background: linear-gradient(158deg, #fbc7db 0%, #ef9ec0 45%, #e07ba4 100%);
+            box-shadow: inset 0 -7px 16px rgba(150, 40, 80, 0.45),
+                        inset 0 7px 14px rgba(255, 255, 255, 0.6),
+                        inset 6px 0 12px rgba(255, 255, 255, 0.25),
+                        0 16px 30px rgba(0, 0, 0, 0.55);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .fight-art .soap span {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem; letter-spacing: 0.22em; font-weight: 500;
+            text-transform: uppercase; color: #8a2a50; opacity: 0.8;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+        }
+
+        /* --- My Neighbour Totoro --- */
+        .totoro-art {
+            background: linear-gradient(180deg, #dcefe4 0%, #b6ddc6 48%, #7bb595 100%);
+            overflow: hidden;
+        }
+        .totoro-art .rain {
+            position: absolute; inset: 0; z-index: 1;
+            background: repeating-linear-gradient(80deg, transparent 0 26px, rgba(255, 255, 255, 0.22) 26px 27px);
+            opacity: 0.35;
+        }
+        .totoro-art .body {
+            position: absolute; z-index: 2; bottom: -6%; left: 50%;
+            transform: translateX(-50%);
+            width: 74%; height: 70%;
+            background: radial-gradient(115% 95% at 50% 22%, #8f8b88, #6c6866);
+            border-radius: 50%;
+        }
+        .totoro-art .belly {
+            position: absolute; z-index: 3; bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 48%; height: 44%;
+            background: #dccdb6;
+            border-radius: 50% 50% 46% 46% / 66% 66% 40% 40%;
+        }
+        /* soft rounded ears */
+        .totoro-art .ear {
+            position: absolute; z-index: 2; bottom: 62%;
+            width: 26px; height: 42px;
+            background: #6c6866;
+            border-radius: 50% 50% 45% 45% / 70% 70% 30% 30%;
+        }
+        .totoro-art .ear.l { left: 34%; transform: rotate(-12deg); }
+        .totoro-art .ear.r { right: 34%; transform: rotate(12deg); }
+        .totoro-art .leaf {
+            position: absolute; z-index: 5; top: 8%; left: 50%;
+            transform: translateX(-50%) rotate(10deg);
+            width: 42px; height: 26px;
+            background: linear-gradient(135deg, #6fb987, #4f9a6d);
+            border-radius: 8px 100% 8px 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+        }
+
         /* Instagram Grid - 3 columns */
         .instagram-grid {
             display: grid;
@@ -525,6 +744,11 @@
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
             }
+
+            .films-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
         }
     </style>
 </head>
@@ -599,6 +823,75 @@
             </div>
         </section>
     </div>
+
+    <section class="films-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Films</h2>
+                <p>Some of my favorite movies</p>
+            </div>
+
+            <div class="films-grid">
+                <div class="film-card">
+                    <div class="film-art moonlight-art">
+                        <div class="stars"></div>
+                        <div class="glimmer"></div>
+                        <div class="moon"></div>
+                        <div class="sea"></div>
+                        <div class="figure"></div>
+                    </div>
+                    <div class="film-meta">
+                        <span class="film-year">2016 · Barry Jenkins</span>
+                        <h3 class="film-title">Moonlight</h3>
+                    </div>
+                </div>
+
+                <div class="film-card">
+                    <div class="film-art isle-art">
+                        <div class="rays"></div>
+                        <div class="sun"></div>
+                        <div class="hill h1"></div>
+                        <div class="hill h2"></div>
+                        <div class="ground"></div>
+                        <div class="bit b1"></div>
+                        <div class="bit b2"></div>
+                        <div class="bit b3"></div>
+                    </div>
+                    <div class="film-meta">
+                        <span class="film-year">2018 · Wes Anderson</span>
+                        <h3 class="film-title">Isle of Dogs</h3>
+                    </div>
+                </div>
+
+                <div class="film-card">
+                    <div class="film-art fight-art">
+                        <div class="streak"></div>
+                        <div class="glow"></div>
+                        <div class="soap"><span>Fight Club</span></div>
+                    </div>
+                    <div class="film-meta">
+                        <span class="film-year">1999 · David Fincher</span>
+                        <h3 class="film-title">Fight Club</h3>
+                    </div>
+                </div>
+
+                <div class="film-card">
+                    <div class="film-art totoro-art">
+                        <div class="rain"></div>
+                        <div class="leaf"></div>
+                        <div class="ear l"></div>
+                        <div class="ear r"></div>
+                        <div class="body"></div>
+                        <div class="belly"></div>
+                    </div>
+                    <div class="film-meta">
+                        <span class="film-year">1988 · Hayao Miyazaki</span>
+                        <h3 class="film-title">My Neighbour Totoro</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section class="things-section">
         <div class="container">
@@ -798,7 +1091,5 @@
         })();
     </script>
 
-    <!-- Liquid-glass custom cursor -->
-    <script src="cursor.js"></script>
 </body>
 </html>
