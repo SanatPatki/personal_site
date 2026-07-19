@@ -575,6 +575,173 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
         }
 
+        /* Novels Section — reuses the .film-card poster styling */
+        .novels-section {
+            padding: 40px 0 20px;
+        }
+
+        /* --- A Thousand Splendid Suns --- */
+        .splendid-art {
+            background: linear-gradient(180deg, #f2b446 0%, #e5872f 46%, #bd4a1f 78%, #7c2f1a 100%);
+            overflow: hidden;
+        }
+        .splendid-art .rays {
+            position: absolute; z-index: 1; top: 30%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 240%; aspect-ratio: 1; border-radius: 50%;
+            background: repeating-conic-gradient(from 4deg, rgba(255, 236, 190, 0.5) 0deg 8deg, transparent 8deg 16deg);
+            opacity: 0.4;
+        }
+        .splendid-art .sun {
+            position: absolute; z-index: 2; top: 30%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 88px; height: 88px; border-radius: 50%;
+            background: radial-gradient(circle at 42% 38%, #fff2cf, #ffd873 55%, #f4a63a);
+            box-shadow: 0 0 40px 10px rgba(255, 214, 120, 0.6), 0 0 90px 30px rgba(244, 150, 40, 0.3);
+        }
+        .splendid-art .sun.s2 {
+            top: 16%; left: 22%; width: 22px; height: 22px;
+            box-shadow: 0 0 16px 4px rgba(255, 220, 140, 0.5);
+        }
+        .splendid-art .sun.s3 {
+            top: 20%; left: 80%; width: 16px; height: 16px;
+            box-shadow: 0 0 12px 3px rgba(255, 220, 140, 0.45);
+        }
+        .splendid-art .skyline {
+            position: absolute; z-index: 3; left: 0; right: 0; bottom: 0; height: 34%;
+            background: linear-gradient(180deg, #6b2716, #401710);
+        }
+        .splendid-art .dome {
+            position: absolute; z-index: 4; bottom: 30%;
+            width: 46px; height: 40px; background: #401710;
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        }
+        .splendid-art .dome::before {
+            content: ''; position: absolute; bottom: 96%; left: 50%; transform: translateX(-50%);
+            width: 5px; height: 16px; background: #401710; border-radius: 3px 3px 0 0;
+        }
+        .splendid-art .dome.d1 { left: 20%; }
+        .splendid-art .dome.d2 { left: 50%; transform: translateX(-50%); width: 60px; height: 54px; bottom: 30%; }
+        .splendid-art .dome.d2::before { width: 6px; height: 22px; }
+        .splendid-art .dome.d3 { right: 20%; }
+
+        /* --- The Invention of Hugo Cabret --- */
+        .hugo-art {
+            background: radial-gradient(120% 100% at 50% 42%, #17414d 0%, #0d2a33 55%, #04141a 100%);
+            overflow: hidden;
+        }
+        .hugo-art .gear {
+            position: absolute; z-index: 1; border-radius: 50%;
+            background: repeating-conic-gradient(#3a6f74 0deg 12deg, transparent 12deg 24deg);
+            opacity: 0.5;
+        }
+        .hugo-art .gear.g1 { top: -18%; right: -16%; width: 55%; aspect-ratio: 1; }
+        .hugo-art .gear.g2 { bottom: -14%; left: -14%; width: 42%; aspect-ratio: 1; opacity: 0.35; }
+        .hugo-art .clock {
+            position: absolute; z-index: 3; top: 42%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 66%; aspect-ratio: 1; border-radius: 50%;
+            background: radial-gradient(circle at 42% 38%, #f4e7c8, #d9c398 70%, #b79c68);
+            box-shadow: 0 0 0 7px #9c7f4e, 0 0 0 11px #6f5a37,
+                        inset 0 4px 12px rgba(255, 255, 255, 0.4),
+                        0 18px 34px rgba(0, 0, 0, 0.5);
+        }
+        .hugo-art .clock::before {
+            content: ''; position: absolute; inset: 12%; border-radius: 50%;
+            background: repeating-conic-gradient(#7a643c 0deg 1.5deg, transparent 1.5deg 30deg);
+            opacity: 0.7;
+        }
+        .hugo-art .hand {
+            position: absolute; z-index: 4; left: 50%; top: 42%;
+            background: #3a2f1c; border-radius: 3px; transform-origin: bottom center;
+        }
+        .hugo-art .hand.hr {
+            width: 6px; height: 15%; transform: translate(-50%, -100%) rotate(38deg);
+        }
+        .hugo-art .hand.hm {
+            width: 4px; height: 22%; transform: translate(-50%, -100%) rotate(-70deg);
+        }
+        .hugo-art .pin {
+            position: absolute; z-index: 5; top: 42%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px; height: 12px; border-radius: 50%;
+            background: #3a2f1c; box-shadow: 0 0 0 3px #b79c68;
+        }
+
+        /* --- The Alchemist --- */
+        .alchemist-art {
+            background: linear-gradient(180deg, #24314f 0%, #7c5a7a 34%, #d98b57 62%, #f0c27b 100%);
+            overflow: hidden;
+        }
+        .alchemist-art .stars {
+            position: absolute; inset: 0; z-index: 1;
+            background-image:
+                radial-gradient(1.5px 1.5px at 20% 14%, rgba(255, 255, 255, 0.85), transparent),
+                radial-gradient(1.3px 1.3px at 68% 10%, rgba(255, 255, 255, 0.6), transparent),
+                radial-gradient(1.2px 1.2px at 40% 20%, rgba(255, 255, 255, 0.55), transparent),
+                radial-gradient(1px 1px at 84% 22%, rgba(255, 255, 255, 0.5), transparent);
+        }
+        .alchemist-art .sun {
+            position: absolute; z-index: 2; top: 44%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px; height: 70px; border-radius: 50%;
+            background: radial-gradient(circle at 46% 42%, #fff0cf, #ffcf7a 60%, #f0a24a);
+            box-shadow: 0 0 34px 10px rgba(255, 200, 120, 0.55);
+        }
+        .alchemist-art .sand {
+            position: absolute; z-index: 4; left: 0; right: 0; bottom: 0; height: 30%;
+            background: linear-gradient(180deg, #e0a760, #c07f40);
+        }
+        .alchemist-art .pyramid {
+            position: absolute; z-index: 3; bottom: 28%;
+            width: 0; height: 0; border-style: solid;
+            border-color: transparent transparent #8a5a34 transparent;
+        }
+        .alchemist-art .pyramid.p1 {
+            left: 14%; border-width: 0 46px 62px 46px;
+        }
+        .alchemist-art .pyramid.p2 {
+            right: 12%; border-width: 0 60px 84px 60px; bottom: 28%;
+            border-color: transparent transparent #74491f transparent;
+        }
+
+        /* --- Pride and Prejudice --- */
+        .pride-art {
+            background: linear-gradient(160deg, #f6ede4 0%, #f0dcd6 55%, #e6c7c4 100%);
+            overflow: hidden;
+        }
+        .pride-art .frame {
+            position: absolute; inset: 14px; z-index: 4; border-radius: 8px;
+            border: 1.5px solid #b07d84;
+            box-shadow: inset 0 0 0 4px rgba(176, 125, 132, 0.28);
+        }
+        .pride-art .cameo {
+            position: absolute; z-index: 2; top: 40%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 52%; height: 44%; border-radius: 50%;
+            background: radial-gradient(circle at 50% 40%, #fbf5ef, #ecd3cf);
+            box-shadow: 0 0 0 4px #cf9ea0, 0 8px 22px rgba(120, 70, 75, 0.22);
+            overflow: hidden;
+        }
+        .pride-art .bust {
+            position: absolute; bottom: -6%; left: 50%; transform: translateX(-46%);
+            width: 62%; height: 58%; background: #7c4a52;
+            border-radius: 46% 46% 0 0 / 70% 70% 0 0;
+        }
+        .pride-art .bust::before {
+            content: ''; position: absolute; bottom: 66%; left: 46%; transform: translateX(-50%);
+            width: 52%; aspect-ratio: 1; border-radius: 50%; background: #7c4a52;
+        }
+        .pride-art .sprig {
+            position: absolute; z-index: 5; width: 30px; height: 30px;
+            background:
+                radial-gradient(6px 12px at 50% 20%, #c98a92 60%, transparent 62%),
+                radial-gradient(12px 6px at 22% 60%, #b8767f 60%, transparent 62%),
+                radial-gradient(12px 6px at 78% 60%, #b8767f 60%, transparent 62%);
+        }
+        .pride-art .sprig.left { bottom: 20px; left: 20px; }
+        .pride-art .sprig.right { bottom: 20px; right: 20px; transform: scaleX(-1); }
+
         /* Instagram Grid - 3 columns */
         .instagram-grid {
             display: grid;
@@ -710,6 +877,16 @@
 
         .footer-links a:hover {
             opacity: 0.5;
+        }
+
+        .footer-motto {
+            margin-top: 14px;
+            font-family: 'Crimson Pro', serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
+            color: var(--text);
+            opacity: 0.65;
         }
 
         /* Responsive */
@@ -893,6 +1070,78 @@
         </div>
     </section>
 
+    <section class="novels-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Novels</h2>
+                <p>Some of my favorite books</p>
+            </div>
+
+            <div class="films-grid">
+                <div class="film-card">
+                    <div class="film-art splendid-art">
+                        <div class="rays"></div>
+                        <div class="sun s2"></div>
+                        <div class="sun s3"></div>
+                        <div class="sun"></div>
+                        <div class="skyline"></div>
+                        <div class="dome d1"></div>
+                        <div class="dome d2"></div>
+                        <div class="dome d3"></div>
+                    </div>
+                    <div class="film-meta">
+                        <span class="film-year">2007 · Khaled Hosseini</span>
+                        <h3 class="film-title">A Thousand Splendid Suns</h3>
+                    </div>
+                </div>
+
+                <div class="film-card">
+                    <div class="film-art hugo-art">
+                        <div class="gear g1"></div>
+                        <div class="gear g2"></div>
+                        <div class="clock"></div>
+                        <div class="hand hr"></div>
+                        <div class="hand hm"></div>
+                        <div class="pin"></div>
+                    </div>
+                    <div class="film-meta">
+                        <span class="film-year">2007 · Brian Selznick</span>
+                        <h3 class="film-title">The Invention of Hugo Cabret</h3>
+                    </div>
+                </div>
+
+                <div class="film-card">
+                    <div class="film-art alchemist-art">
+                        <div class="stars"></div>
+                        <div class="sun"></div>
+                        <div class="pyramid p2"></div>
+                        <div class="pyramid p1"></div>
+                        <div class="sand"></div>
+                    </div>
+                    <div class="film-meta">
+                        <span class="film-year">1988 · Paulo Coelho</span>
+                        <h3 class="film-title">The Alchemist</h3>
+                    </div>
+                </div>
+
+                <div class="film-card">
+                    <div class="film-art pride-art">
+                        <div class="cameo">
+                            <div class="bust"></div>
+                        </div>
+                        <div class="sprig left"></div>
+                        <div class="sprig right"></div>
+                        <div class="frame"></div>
+                    </div>
+                    <div class="film-meta">
+                        <span class="film-year">1813 · Jane Austen</span>
+                        <h3 class="film-title">Pride and Prejudice</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="things-section">
         <div class="container">
             <div class="section-header">
@@ -1028,6 +1277,7 @@
                 <a href="https://github.com/SanatPatki" target="_blank">GitHub</a>
             </div>
             <p>© 2024 Sanat Patki. All rights reserved.</p>
+            <p class="footer-motto">non est vivere sed valere vita est</p>
         </footer>
     </div>
 
