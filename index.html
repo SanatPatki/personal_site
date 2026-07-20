@@ -677,40 +677,43 @@
             width: 9%; aspect-ratio: 1; border-radius: 50%;
             background: #f2d7bd;
         }
+        /* tousled golden hair — a cluster of tufts so the silhouette isn't a smooth dome */
         .prince-art .hair {
-            position: absolute; bottom: 58.5%; left: 50%; transform: translateX(-50%);
-            width: 11.5%; height: 7.5%;
+            position: absolute; bottom: 58%; left: 50%; transform: translateX(-50%);
+            width: 6%; aspect-ratio: 1; border-radius: 50%;
             background: #f3c33f;
-            border-radius: 50% 50% 44% 44% / 78% 78% 34% 34%;
+        }
+        .prince-art .hair::before {
+            content: ''; position: absolute; width: 82%; aspect-ratio: 1; border-radius: 50%;
+            background: #f3c33f; left: -58%; bottom: -10%;
         }
         .prince-art .hair::after {
-            content: ''; position: absolute; top: -34%; left: 52%;
-            transform: translateX(-50%) rotate(14deg);
-            width: 26%; height: 62%;
-            background: #f3c33f;
-            border-radius: 50% 50% 40% 40%;
+            content: ''; position: absolute; width: 82%; aspect-ratio: 1; border-radius: 50%;
+            background: #f3c33f; right: -58%; bottom: -10%;
         }
-        /* scarf: a collar wrapped around the neck, with a tail flowing out */
+        /* scarf: a simple band across the neck with two draped tails */
         .prince-art .scarf {
-            position: absolute; bottom: 52%; left: 50%; transform: translateX(-50%);
-            width: 13%; height: 4%;
-            background: #ece1c8;
-            border-radius: 46% 46% 50% 50% / 50% 50% 95% 95%;
+            position: absolute; bottom: 53%; left: 50%; transform: translateX(-50%);
+            width: 12%; height: 2.8%;
+            background: #e9dcc2;
+            border-radius: 4px;
+            z-index: 2;
         }
         .prince-art .scarf::before {
-            /* small knot at the front of the throat */
-            content: ''; position: absolute; bottom: -55%; left: 50%; transform: translateX(-50%);
-            width: 34%; height: 130%;
-            background: #ddccab;
-            border-radius: 45% 45% 50% 50%;
+            /* front tail, longer, notched end */
+            content: ''; position: absolute; top: 50%; left: 20%;
+            width: 30%; height: 230%;
+            background: #ded0b1;
+            clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%);
+            transform-origin: top center; transform: rotate(-5deg);
         }
         .prince-art .scarf::after {
-            /* windswept tail flowing to the side, with a forked end */
-            content: ''; position: absolute; top: -6%; left: 74%;
-            width: 150%; height: 250%;
-            background: linear-gradient(100deg, #ece1c8, #d0bd97);
-            clip-path: polygon(0 16%, 100% 0, 80% 42%, 100% 80%, 8% 100%);
-            transform-origin: left top; transform: rotate(7deg);
+            /* second tail, shorter, splayed out */
+            content: ''; position: absolute; top: 50%; left: 52%;
+            width: 27%; height: 160%;
+            background: #e9dcc2;
+            clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%);
+            transform-origin: top center; transform: rotate(8deg);
         }
 
         /* --- The Alchemist --- */
