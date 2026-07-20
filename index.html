@@ -665,11 +665,16 @@
             width: 2px; height: 12px; background: #3f7a3a;
         }
         /* the little prince, standing on the planet */
-        .prince-art .prince { position: absolute; inset: 0; z-index: 4; }
+        .prince-art .prince {
+            position: absolute; inset: 0; z-index: 4;
+            /* shrink the figure toward his feet so he stays standing on the planet */
+            transform: scale(0.7);
+            transform-origin: 50% 60%;
+        }
         .prince-art .coat {
             position: absolute; bottom: 40%; left: 50%; transform: translateX(-50%);
             width: 20%; height: 15%;
-            background: linear-gradient(160deg, #6fae8f, #3f7a63);
+            background: linear-gradient(160deg, #b3ddf5, #82bce4);
             clip-path: polygon(32% 0, 68% 0, 100% 100%, 0 100%);
         }
         .prince-art .head {
@@ -691,18 +696,12 @@
             content: ''; position: absolute; width: 82%; aspect-ratio: 1; border-radius: 50%;
             background: #f3c33f; right: -58%; bottom: -10%;
         }
-        /* scarf: a band at the neck, with a tail streaming in the wind (SVG) */
+        /* scarf: one SVG — neck wrap + windswept tail drawn as a single shape,
+           so the wrap and tail can never separate or clip against each other */
         .prince-art .scarf {
-            position: absolute; bottom: 53%; left: 50%; transform: translateX(-50%);
-            width: 12%; height: 2.8%;
-            background: #e9dcc2;
-            border-radius: 4px;
-            z-index: 2;
-        }
-        .prince-art .scarf-tail {
-            position: absolute; z-index: 1;
-            left: 46%; bottom: 48.5%;
-            width: 24%; height: auto;
+            position: absolute;
+            left: 38%; bottom: 47%;
+            width: 34%; height: auto;
             overflow: visible;
         }
 
@@ -1141,10 +1140,11 @@
                         <div class="rose"></div>
                         <div class="prince">
                             <div class="coat"></div>
-                            <svg class="scarf-tail" viewBox="0 0 90 70" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8,44 C26,30 46,42 64,30 C74,23 82,27 86,24" stroke="#e6d8ba" stroke-width="11" stroke-linecap="round"/>
+                            <svg class="scarf" viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- tail first, then the neck wrap on top so the join is always covered -->
+                                <path d="M50,32 C68,24 84,34 102,24 C110,20 116,23 118,19" stroke="#d76a5c" stroke-width="12" stroke-linecap="round"/>
+                                <rect x="24" y="23" width="38" height="17" rx="8.5" fill="#d76a5c"/>
                             </svg>
-                            <div class="scarf"></div>
                             <div class="head"></div>
                             <div class="hair"></div>
                         </div>
