@@ -691,7 +691,7 @@
             content: ''; position: absolute; width: 82%; aspect-ratio: 1; border-radius: 50%;
             background: #f3c33f; right: -58%; bottom: -10%;
         }
-        /* scarf: a simple band across the neck with two draped tails */
+        /* scarf: a band at the neck, with a tail streaming in the wind (SVG) */
         .prince-art .scarf {
             position: absolute; bottom: 53%; left: 50%; transform: translateX(-50%);
             width: 12%; height: 2.8%;
@@ -699,21 +699,11 @@
             border-radius: 4px;
             z-index: 2;
         }
-        .prince-art .scarf::before {
-            /* front tail, longer, notched end */
-            content: ''; position: absolute; top: 50%; left: 20%;
-            width: 30%; height: 230%;
-            background: #ded0b1;
-            clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%);
-            transform-origin: top center; transform: rotate(-5deg);
-        }
-        .prince-art .scarf::after {
-            /* second tail, shorter, splayed out */
-            content: ''; position: absolute; top: 50%; left: 52%;
-            width: 27%; height: 160%;
-            background: #e9dcc2;
-            clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%);
-            transform-origin: top center; transform: rotate(8deg);
+        .prince-art .scarf-tail {
+            position: absolute; z-index: 1;
+            left: 46%; bottom: 48.5%;
+            width: 24%; height: auto;
+            overflow: visible;
         }
 
         /* --- The Alchemist --- */
@@ -1151,6 +1141,9 @@
                         <div class="rose"></div>
                         <div class="prince">
                             <div class="coat"></div>
+                            <svg class="scarf-tail" viewBox="0 0 90 70" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8,44 C26,30 46,42 64,30 C74,23 82,27 86,24" stroke="#e6d8ba" stroke-width="11" stroke-linecap="round"/>
+                            </svg>
                             <div class="scarf"></div>
                             <div class="head"></div>
                             <div class="hair"></div>
