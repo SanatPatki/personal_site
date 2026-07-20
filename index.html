@@ -690,14 +690,27 @@
             background: #f3c33f;
             border-radius: 50% 50% 40% 40%;
         }
-        /* windswept scarf, tapering out from the neck */
+        /* scarf: a collar wrapped around the neck, with a tail flowing out */
         .prince-art .scarf {
-            position: absolute; bottom: 47%; left: 49%;
-            width: 19%; height: 6.5%;
-            background: linear-gradient(90deg, #efe4cc, #d3c19c);
-            clip-path: polygon(0 0, 100% 30%, 100% 58%, 0 100%);
-            transform-origin: left center;
-            transform: rotate(-4deg);
+            position: absolute; bottom: 52%; left: 50%; transform: translateX(-50%);
+            width: 13%; height: 4%;
+            background: #ece1c8;
+            border-radius: 46% 46% 50% 50% / 50% 50% 95% 95%;
+        }
+        .prince-art .scarf::before {
+            /* small knot at the front of the throat */
+            content: ''; position: absolute; bottom: -55%; left: 50%; transform: translateX(-50%);
+            width: 34%; height: 130%;
+            background: #ddccab;
+            border-radius: 45% 45% 50% 50%;
+        }
+        .prince-art .scarf::after {
+            /* windswept tail flowing to the side, with a forked end */
+            content: ''; position: absolute; top: -6%; left: 74%;
+            width: 150%; height: 250%;
+            background: linear-gradient(100deg, #ece1c8, #d0bd97);
+            clip-path: polygon(0 16%, 100% 0, 80% 42%, 100% 80%, 8% 100%);
+            transform-origin: left top; transform: rotate(7deg);
         }
 
         /* --- The Alchemist --- */
