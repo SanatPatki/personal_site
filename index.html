@@ -678,25 +678,26 @@
             background: #f2d7bd;
         }
         .prince-art .hair {
-            position: absolute; bottom: 59%; left: 50%; transform: translateX(-50%);
-            width: 13%; height: 7%;
+            position: absolute; bottom: 58.5%; left: 50%; transform: translateX(-50%);
+            width: 11.5%; height: 7.5%;
             background: #f3c33f;
-            border-radius: 50% 50% 42% 42% / 80% 80% 30% 30%;
-            box-shadow: -5px 2px 0 -1px #f3c33f, 5px 2px 0 -1px #f3c33f;
+            border-radius: 50% 50% 44% 44% / 78% 78% 34% 34%;
         }
+        .prince-art .hair::after {
+            content: ''; position: absolute; top: -34%; left: 52%;
+            transform: translateX(-50%) rotate(14deg);
+            width: 26%; height: 62%;
+            background: #f3c33f;
+            border-radius: 50% 50% 40% 40%;
+        }
+        /* windswept scarf, tapering out from the neck */
         .prince-art .scarf {
-            position: absolute; bottom: 52%; left: 56%;
-            width: 15%; height: 4%;
-            background: #e9dcc2;
-            border-radius: 2px 8px 8px 2px;
-            transform: rotate(-14deg);
-        }
-        .prince-art .scarf::after {
-            content: ''; position: absolute; left: 82%; top: 40%;
-            width: 55%; height: 220%;
-            background: #e9dcc2;
-            border-radius: 2px 8px 8px 60%;
-            transform: rotate(28deg);
+            position: absolute; bottom: 47%; left: 49%;
+            width: 19%; height: 6.5%;
+            background: linear-gradient(90deg, #efe4cc, #d3c19c);
+            clip-path: polygon(0 0, 100% 30%, 100% 58%, 0 100%);
+            transform-origin: left center;
+            transform: rotate(-4deg);
         }
 
         /* --- The Alchemist --- */
