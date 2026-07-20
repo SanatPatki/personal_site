@@ -625,47 +625,78 @@
         .splendid-art .dome.d2::before { width: 6px; height: 22px; }
         .splendid-art .dome.d3 { right: 20%; }
 
-        /* --- The Invention of Hugo Cabret --- */
-        .hugo-art {
-            background: radial-gradient(120% 100% at 50% 42%, #17414d 0%, #0d2a33 55%, #04141a 100%);
+        /* --- The Little Prince --- */
+        .prince-art {
+            background: linear-gradient(180deg, #0a1733 0%, #14285a 52%, #2a4a92 100%);
             overflow: hidden;
         }
-        .hugo-art .gear {
-            position: absolute; z-index: 1; border-radius: 50%;
-            background: repeating-conic-gradient(#3a6f74 0deg 12deg, transparent 12deg 24deg);
-            opacity: 0.5;
+        .prince-art .stars {
+            position: absolute; inset: 0; z-index: 1;
+            background-image:
+                radial-gradient(1.6px 1.6px at 16% 14%, rgba(255, 255, 255, 0.9), transparent),
+                radial-gradient(1.4px 1.4px at 70% 10%, rgba(255, 255, 255, 0.7), transparent),
+                radial-gradient(1.2px 1.2px at 40% 22%, rgba(255, 255, 255, 0.6), transparent),
+                radial-gradient(1px 1px at 86% 26%, rgba(255, 255, 255, 0.55), transparent),
+                radial-gradient(1.3px 1.3px at 24% 34%, rgba(255, 255, 255, 0.55), transparent),
+                radial-gradient(1px 1px at 60% 30%, rgba(255, 255, 255, 0.5), transparent);
         }
-        .hugo-art .gear.g1 { top: -18%; right: -16%; width: 55%; aspect-ratio: 1; }
-        .hugo-art .gear.g2 { bottom: -14%; left: -14%; width: 42%; aspect-ratio: 1; opacity: 0.35; }
-        .hugo-art .clock {
-            position: absolute; z-index: 3; top: 42%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 66%; aspect-ratio: 1; border-radius: 50%;
-            background: radial-gradient(circle at 42% 38%, #f4e7c8, #d9c398 70%, #b79c68);
-            box-shadow: 0 0 0 7px #9c7f4e, 0 0 0 11px #6f5a37,
-                        inset 0 4px 12px rgba(255, 255, 255, 0.4),
-                        0 18px 34px rgba(0, 0, 0, 0.5);
+        .prince-art .moon {
+            position: absolute; z-index: 2; top: 12%; right: 16%;
+            width: 30px; height: 30px; border-radius: 50%;
+            background: radial-gradient(circle at 40% 38%, #fff6dc, #ffe49c 65%, #f2c761);
+            box-shadow: 0 0 22px 6px rgba(255, 220, 140, 0.45);
         }
-        .hugo-art .clock::before {
-            content: ''; position: absolute; inset: 12%; border-radius: 50%;
-            background: repeating-conic-gradient(#7a643c 0deg 1.5deg, transparent 1.5deg 30deg);
-            opacity: 0.7;
+        /* asteroid B-612 */
+        .prince-art .planet {
+            position: absolute; z-index: 2; bottom: 6%; left: 50%;
+            transform: translateX(-50%);
+            width: 52%; aspect-ratio: 1; border-radius: 50%;
+            background: radial-gradient(circle at 38% 32%, #b8d36a, #7fae4f 55%, #5a8a3c);
+            box-shadow: inset -8px -10px 18px rgba(0, 0, 0, 0.28), 0 10px 26px rgba(0, 0, 0, 0.4);
         }
-        .hugo-art .hand {
-            position: absolute; z-index: 4; left: 50%; top: 42%;
-            background: #3a2f1c; border-radius: 3px; transform-origin: bottom center;
+        /* rose on the planet */
+        .prince-art .rose {
+            position: absolute; z-index: 3; bottom: 30%; left: 30%;
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #e2506b;
         }
-        .hugo-art .hand.hr {
-            width: 6px; height: 15%; transform: translate(-50%, -100%) rotate(38deg);
+        .prince-art .rose::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            width: 2px; height: 12px; background: #3f7a3a;
         }
-        .hugo-art .hand.hm {
-            width: 4px; height: 22%; transform: translate(-50%, -100%) rotate(-70deg);
+        /* the little prince, standing on the planet */
+        .prince-art .prince { position: absolute; inset: 0; z-index: 4; }
+        .prince-art .coat {
+            position: absolute; bottom: 40%; left: 50%; transform: translateX(-50%);
+            width: 20%; height: 15%;
+            background: linear-gradient(160deg, #6fae8f, #3f7a63);
+            clip-path: polygon(32% 0, 68% 0, 100% 100%, 0 100%);
         }
-        .hugo-art .pin {
-            position: absolute; z-index: 5; top: 42%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 12px; height: 12px; border-radius: 50%;
-            background: #3a2f1c; box-shadow: 0 0 0 3px #b79c68;
+        .prince-art .head {
+            position: absolute; bottom: 54%; left: 50%; transform: translateX(-50%);
+            width: 9%; aspect-ratio: 1; border-radius: 50%;
+            background: #f2d7bd;
+        }
+        .prince-art .hair {
+            position: absolute; bottom: 59%; left: 50%; transform: translateX(-50%);
+            width: 13%; height: 7%;
+            background: #f3c33f;
+            border-radius: 50% 50% 42% 42% / 80% 80% 30% 30%;
+            box-shadow: -5px 2px 0 -1px #f3c33f, 5px 2px 0 -1px #f3c33f;
+        }
+        .prince-art .scarf {
+            position: absolute; bottom: 52%; left: 56%;
+            width: 15%; height: 4%;
+            background: #e9dcc2;
+            border-radius: 2px 8px 8px 2px;
+            transform: rotate(-14deg);
+        }
+        .prince-art .scarf::after {
+            content: ''; position: absolute; left: 82%; top: 40%;
+            width: 55%; height: 220%;
+            background: #e9dcc2;
+            border-radius: 2px 8px 8px 60%;
+            transform: rotate(28deg);
         }
 
         /* --- The Alchemist --- */
@@ -1096,17 +1127,21 @@
                 </div>
 
                 <div class="film-card">
-                    <div class="film-art hugo-art">
-                        <div class="gear g1"></div>
-                        <div class="gear g2"></div>
-                        <div class="clock"></div>
-                        <div class="hand hr"></div>
-                        <div class="hand hm"></div>
-                        <div class="pin"></div>
+                    <div class="film-art prince-art">
+                        <div class="stars"></div>
+                        <div class="moon"></div>
+                        <div class="planet"></div>
+                        <div class="rose"></div>
+                        <div class="prince">
+                            <div class="coat"></div>
+                            <div class="scarf"></div>
+                            <div class="head"></div>
+                            <div class="hair"></div>
+                        </div>
                     </div>
                     <div class="film-meta">
-                        <span class="film-year">2007 · Brian Selznick</span>
-                        <h3 class="film-title">The Invention of Hugo Cabret</h3>
+                        <span class="film-year">1943 · Antoine de Saint-Exupéry</span>
+                        <h3 class="film-title">The Little Prince</h3>
                     </div>
                 </div>
 
