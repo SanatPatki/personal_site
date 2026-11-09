@@ -9,8 +9,8 @@
     <script>
         (function () {
             var saved = localStorage.getItem('theme');
-            var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (saved === 'dark' || (!saved && prefersDark)) {
+            // Dark is the default; only honour an explicit light choice.
+            if (saved !== 'light') {
                 document.documentElement.setAttribute('data-theme', 'dark');
             }
             // If the intro was already dismissed this session, skip it (no flash).
@@ -205,22 +205,40 @@
             position: fixed;
             inset: 0;
             z-index: 1000;
-            background: var(--bg);
-            color: var(--text);
+            background: radial-gradient(circle at 50% 42%, #0b0d20 0%, #05060e 55%, #000006 100%);
+            color: #eef0ff;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             padding: 40px;
-            transition: opacity 0.7s ease, transform 0.7s ease;
+            overflow: hidden;
+            transition: opacity 0.6s ease;
         }
+
+        .warp-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            z-index: 0;
+        }
+
+        #landing-root .landing-inner { position: relative; z-index: 1; }
 
         #landing-root.exiting {
             opacity: 0;
-            transform: translateY(-24px);
             pointer-events: none;
         }
 
+        /* hyperspace jump */
+        #landing-root.warping .landing-inner {
+            animation: warpText 0.6s ease forwards;
+        }
+        @keyframes warpText {
+            to { opacity: 0; transform: scale(1.6); filter: blur(3px); }
+        }
         .landing-done #landing-root { display: none !important; }
 
         .landing-inner {
@@ -238,6 +256,8 @@
             font-weight: 400;
             letter-spacing: -0.03em;
             line-height: 1.05;
+            color: #f3f4ff;
+            text-shadow: 0 0 34px rgba(150, 180, 255, 0.28);
         }
 
         .landing-tag {
@@ -245,7 +265,7 @@
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.2em;
-            color: var(--gray);
+            color: rgba(220, 225, 255, 0.55);
             margin-top: 18px;
         }
 
@@ -255,19 +275,20 @@
             font-size: 0.85rem;
             letter-spacing: 0.05em;
             background: none;
-            color: var(--text);
-            border: 1px solid var(--text);
+            color: #eef0ff;
+            border: 1px solid rgba(238, 240, 255, 0.6);
             border-radius: 999px;
             padding: 14px 34px;
             cursor: pointer;
             opacity: 0;
-            transition: background 0.3s ease, color 0.3s ease;
+            transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
             animation: landingIn 0.9s ease 0.45s forwards;
         }
 
         .landing-enter:hover {
-            background: var(--text);
-            color: var(--bg);
+            background: #eef0ff;
+            color: #06070f;
+            box-shadow: 0 0 30px rgba(170, 195, 255, 0.5);
         }
 
         .landing-enter:disabled {
@@ -1411,31 +1432,131 @@
                 return;
             }
 
-            const { useState, useEffect, createElement: h } = React;
+            const { useState, useEffect, useRef, createElement: h } = React;
+
+            // A 3D starfield that drifts, then streaks to lightspeed and flies fully off-screen on warp().
+            function initStarfield(canvas, onCleared) {
+                const ctx = canvas.getContext('2d');
+                let W, H, cx, cy, dpr;
+                function resize() {
+                    dpr = window.devicePixelRatio || 1;
+                    W = canvas.clientWidth; H = canvas.clientHeight;
+                    canvas.width = W * dpr; canvas.height = H * dpr;
+                    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                    cx = W / 2; cy = H / 2;
+                }
+                resize();
+                window.addEventListener('resize', resize);
+                const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const N = Math.max(120, Math.min(650, Math.round(W * H / 2200)));
+                const stars = [];
+                function place(s, fresh) {
+                    s.x = Math.random() * 2 - 1;
+                    s.y = Math.random() * 2 - 1;
+                    s.z = fresh ? (0.75 + Math.random() * 0.25) : Math.random();
+                    if (s.z < 0.02) s.z = 0.02;
+                    s.pz = s.z;
+                    s.dead = false;
+                }
+                for (let i = 0; i < N; i++) { const s = {}; place(s, false); stars.push(s); }
+                const base = reduce ? 0 : 0.0017;
+                let speed = base, warping = false, draining = false, cleared = false, wStart = 0, raf = 0;
+                function tick(t) {
+                    if (warping) {
+                        const p = Math.min(1, (t - wStart) / 1150);
+                        speed = base + (0.085 - base) * (p * p);           // ease-in to lightspeed
+                        if (!draining && (t - wStart) > 420) draining = true; // stop respawning; drain the field
+                    }
+                    // low-alpha fill during warp leaves motion trails; opaque otherwise
+                    ctx.fillStyle = warping ? 'rgba(4,5,12,0.30)' : 'rgba(4,5,12,1)';
+                    ctx.fillRect(0, 0, W, H);
+                    for (const s of stars) {
+                        if (s.dead) continue;
+                        s.pz = s.z;
+                        s.z -= speed;
+                        if (s.z <= 0.02) {                 // passed the camera (centre)
+                            if (draining) { s.dead = true; continue; }
+                            place(s, true); continue;
+                        }
+                        const sx = cx + (s.x / s.z) * cx;
+                        const sy = cy + (s.y / s.z) * cy;
+                        const px = cx + (s.x / s.pz) * cx;
+                        const py = cy + (s.y / s.pz) * cy;
+                        const b = 1 - s.z;
+                        ctx.strokeStyle = 'rgba(255,255,255,' + Math.min(1, b * 0.9 + 0.15) + ')';
+                        ctx.lineWidth = Math.max(0.6, b * 2.2);
+                        ctx.beginPath();
+                        ctx.moveTo(px, py);
+                        ctx.lineTo(sx, sy);
+                        ctx.stroke();
+                        // once it has streaked past the edge, it's gone for good (no fade-in-place)
+                        if (draining && (sx < -24 || sx > W + 24 || sy < -24 || sy > H + 24)) s.dead = true;
+                    }
+                    if (draining && !cleared) {
+                        let alive = 0;
+                        for (const s of stars) if (!s.dead) alive++;
+                        if (alive === 0) { cleared = true; if (onCleared) onCleared(); }  // every star has left
+                    }
+                    raf = requestAnimationFrame(tick);
+                }
+                raf = requestAnimationFrame(tick);
+                return {
+                    warp: function () { if (reduce) return false; warping = true; wStart = performance.now(); return true; },
+                    stop: function () { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); }
+                };
+            }
 
             function Landing() {
                 const [exiting, setExiting] = useState(false);
+                const canvasRef = useRef(null);
+                const ctrlRef = useRef(null);
+                const doneRef = useRef(false);
+                const revealedRef = useRef(false);
 
-                // Lock scrolling while the intro is up.
-                useEffect(() => {
-                    document.body.style.overflow = 'hidden';
-                }, []);
-
-                function enter() {
-                    if (exiting) return;
-                    setExiting(true);
+                function reveal() {
+                    if (revealedRef.current) return;
+                    revealedRef.current = true;
                     const root = document.getElementById('landing-root');
-                    root.classList.add('exiting');
-                    sessionStorage.setItem('entered', '1');
+                    root.classList.add('exiting');                 // empty space dissolves into the dark site
                     document.body.style.overflow = '';
-                    // Remove the overlay once the fade-out finishes.
-                    setTimeout(function () { root.style.display = 'none'; }, 700);
+                    setTimeout(function () {
+                        root.style.display = 'none';
+                        if (ctrlRef.current) ctrlRef.current.stop();
+                    }, 650);
                 }
 
-                return h('div', { className: 'landing-inner' },
-                    h('h1', { className: 'landing-name' }, 'Sanat Patki'),
-                    h('p', { className: 'landing-tag' }, 'CS + Math'),
-                    h('button', { className: 'landing-enter', onClick: enter, disabled: exiting }, 'Enter →')
+                function enter() {
+                    if (doneRef.current) return;
+                    doneRef.current = true;
+                    setExiting(true);
+                    sessionStorage.setItem('entered', '1');
+                    const root = document.getElementById('landing-root');
+                    if (ctrlRef.current && ctrlRef.current.warp()) {
+                        root.classList.add('warping');             // jump; reveal fires once all stars have left
+                        setTimeout(reveal, 2600);                  // safety fallback if clearing stalls
+                    } else {
+                        reveal();                                  // reduced motion / no canvas
+                    }
+                }
+
+                useEffect(function () {
+                    document.body.style.overflow = 'hidden';
+                    if (canvasRef.current) ctrlRef.current = initStarfield(canvasRef.current, reveal);
+                    function onKey(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); } }
+                    window.addEventListener('keydown', onKey);
+                    return function () {
+                        window.removeEventListener('keydown', onKey);
+                        if (ctrlRef.current) ctrlRef.current.stop();
+                    };
+                }, []);
+
+                return h(React.Fragment, null,
+                    h('canvas', { className: 'warp-canvas', ref: canvasRef }),
+                    h('div', { className: 'landing-inner' },
+                        h('h1', { className: 'landing-name' }, 'Sanat Patki'),
+                        h('p', { className: 'landing-tag' }, 'CS + Math'),
+                        h('button', { className: 'landing-enter', onClick: enter, disabled: exiting }, 'Enter →')
+                    )
                 );
             }
 

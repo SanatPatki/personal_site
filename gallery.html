@@ -9,8 +9,8 @@
     <script>
         (function () {
             var saved = localStorage.getItem('theme');
-            var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (saved === 'dark' || (!saved && prefersDark)) {
+            // Dark is the default; only honour an explicit light choice.
+            if (saved !== 'light') {
                 document.documentElement.setAttribute('data-theme', 'dark');
             }
         })();
