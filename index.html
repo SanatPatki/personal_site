@@ -964,9 +964,57 @@
                 gap: 14px;
             }
         }
+
+        /* ===== Hand-drawn sketch cards (Films & Novels) ===== */
+        :root { --paper: #f6efdd; --ink: #2b2620; }
+        [data-theme="dark"] { --paper: #15130d; --ink: #e9e3d1; }
+
+        .sk-card {
+            position: relative;
+            aspect-ratio: 3 / 4;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            background: radial-gradient(120% 90% at 30% 10%, rgba(255,255,255,.04), transparent 60%), var(--paper);
+            box-shadow: 0 8px 22px rgba(0,0,0,.10);
+            transition: transform .35s ease, box-shadow .35s ease;
+            opacity: 0;
+            animation: fadeInUp .7s ease forwards;
+        }
+        .sk-card:nth-child(1) { animation-delay: .08s; }
+        .sk-card:nth-child(2) { animation-delay: .16s; }
+        .sk-card:nth-child(3) { animation-delay: .24s; }
+        .sk-card:nth-child(4) { animation-delay: .32s; }
+        .sk-card:hover { transform: translateY(-6px) rotate(-.5deg); box-shadow: 0 18px 40px rgba(0,0,0,.18); }
+        .sk-card::before {
+            content: ''; position: absolute; inset: 0; pointer-events: none;
+            opacity: .06; mix-blend-mode: multiply;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='skn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23skn)'/%3E%3C/svg%3E");
+        }
+        [data-theme="dark"] .sk-card::before { mix-blend-mode: screen; opacity: .05; }
+
+        .sk-frame { position: absolute; inset: 0; width: 100%; height: 100%; }
+        .sk-frame path { fill: none; stroke: var(--ink); stroke-opacity: 1; stroke-width: 1.1; }
+
+        .sk-art { position: absolute; left: 0; right: 0; top: 7%; height: 58%; display: flex; align-items: center; justify-content: center; }
+        .sk-art svg { height: 100%; width: auto; max-width: 86%; overflow: visible; }
+        .sk-art svg * { fill: none; stroke: var(--ink); stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+        .sk-art .dot { fill: var(--ink); stroke: none; }
+
+        .sk-meta { position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 18px 30px; text-align: center; }
+        .sk-yr { font-family: 'DM Mono', monospace; font-size: .58rem; letter-spacing: .09em; text-transform: uppercase; color: var(--gray); }
+        .sk-title { font-family: 'Crimson Pro', serif; font-weight: 600; font-size: 1.02rem; line-height: 1.1; letter-spacing: -.01em; margin-top: 3px; color: var(--text); }
     </style>
 </head>
 <body>
+    <!-- Shared "rough ink" wobble filter for the hand-drawn Film & Novel cards -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <filter id="rough" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="7" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="3.6"/>
+        </filter>
+    </svg>
+
     <!-- React-powered intro overlay. Falls back to a static name if JS is unavailable. -->
     <noscript><style>#landing-root { display: none !important; }</style></noscript>
     <div id="landing-root">
@@ -1047,62 +1095,63 @@
             </div>
 
             <div class="films-grid">
-                <div class="film-card">
-                    <div class="film-art moonlight-art">
-                        <div class="stars"></div>
-                        <div class="glimmer"></div>
-                        <div class="moon"></div>
-                        <div class="sea"></div>
-                        <div class="figure"></div>
-                    </div>
-                    <div class="film-meta">
-                        <span class="film-year">2016 · Barry Jenkins</span>
-                        <h3 class="film-title">Moonlight</h3>
-                    </div>
+                <div class="sk-card">
+                    <svg class="sk-frame" viewBox="0 0 100 133" preserveAspectRatio="none"><path filter="url(#rough)" d="M6 6 L94 5 L95 128 L5 127 Z"/></svg>
+                    <div class="sk-art"><svg viewBox="0 0 120 120"><g filter="url(#rough)">
+                        <path d="M72 24 A24 24 0 1 0 72 72 A30 30 0 1 1 72 24 Z"/>
+                        <path d="M20 30 l0 8 M16 34 l8 0"/>
+                        <path d="M98 42 l0 8 M94 46 l8 0"/>
+                        <circle class="dot" cx="86" cy="22" r="1.8"/>
+                        <path d="M12 94 q12 -7 24 0 t24 0 t24 0"/>
+                        <path d="M20 104 q10 -6 20 0 t20 0 t20 0"/>
+                    </g></svg></div>
+                    <div class="sk-meta">
+                        <div class="sk-yr">2016 · Barry Jenkins</div>
+                        <div class="sk-title">Moonlight</div>                    </div>
                 </div>
 
-                <div class="film-card">
-                    <div class="film-art isle-art">
-                        <div class="rays"></div>
-                        <div class="sun"></div>
-                        <div class="hill h1"></div>
-                        <div class="hill h2"></div>
-                        <div class="ground"></div>
-                        <div class="bit b1"></div>
-                        <div class="bit b2"></div>
-                        <div class="bit b3"></div>
-                    </div>
-                    <div class="film-meta">
-                        <span class="film-year">2018 · Wes Anderson</span>
-                        <h3 class="film-title">Isle of Dogs</h3>
-                    </div>
+                <div class="sk-card">
+                    <svg class="sk-frame" viewBox="0 0 100 133" preserveAspectRatio="none"><path filter="url(#rough)" d="M5 6 L95 5 L94 128 L6 127 Z"/></svg>
+                    <div class="sk-art"><svg viewBox="0 0 120 120"><g filter="url(#rough)">
+                        <path d="M44 70 C44 60 52 56 60 56 C68 56 76 60 76 72 C76 84 68 90 60 90 C52 90 44 82 44 70 Z"/>
+                        <ellipse cx="40" cy="52" rx="6" ry="8"/>
+                        <ellipse cx="53" cy="42" rx="6" ry="8.5"/>
+                        <ellipse cx="67" cy="42" rx="6" ry="8.5"/>
+                        <ellipse cx="80" cy="52" rx="6" ry="8"/>
+                    </g></svg></div>
+                    <div class="sk-meta">
+                        <div class="sk-yr">2018 · Wes Anderson</div>
+                        <div class="sk-title">Isle of Dogs</div>                    </div>
                 </div>
 
-                <div class="film-card">
-                    <div class="film-art fight-art">
-                        <div class="streak"></div>
-                        <div class="glow"></div>
-                        <div class="soap"><span>Fight Club</span></div>
-                    </div>
-                    <div class="film-meta">
-                        <span class="film-year">1999 · David Fincher</span>
-                        <h3 class="film-title">Fight Club</h3>
-                    </div>
+                <div class="sk-card">
+                    <svg class="sk-frame" viewBox="0 0 100 133" preserveAspectRatio="none"><path filter="url(#rough)" d="M6 5 L94 6 L95 127 L5 128 Z"/></svg>
+                    <div class="sk-art"><svg viewBox="0 0 120 120"><g filter="url(#rough)">
+                        <rect x="30" y="46" width="60" height="40" rx="13"/>
+                        <path d="M37 46 C42 39 52 39 60 39 C68 39 78 39 83 46"/>
+                        <ellipse cx="60" cy="68" rx="17" ry="7.5"/>
+                    </g></svg></div>
+                    <div class="sk-meta">
+                        <div class="sk-yr">1999 · David Fincher</div>
+                        <div class="sk-title">Fight Club</div>                    </div>
                 </div>
 
-                <div class="film-card">
-                    <div class="film-art totoro-art">
-                        <div class="rain"></div>
-                        <div class="leaf"></div>
-                        <div class="ear l"></div>
-                        <div class="ear r"></div>
-                        <div class="body"></div>
-                        <div class="belly"></div>
-                    </div>
-                    <div class="film-meta">
-                        <span class="film-year">1988 · Hayao Miyazaki</span>
-                        <h3 class="film-title">My Neighbour Totoro</h3>
-                    </div>
+                <div class="sk-card">
+                    <svg class="sk-frame" viewBox="0 0 100 133" preserveAspectRatio="none"><path filter="url(#rough)" d="M5 6 L95 6 L94 127 L6 128 Z"/></svg>
+                    <div class="sk-art"><svg viewBox="0 0 120 120"><g filter="url(#rough)">
+                        <path d="M34 106 C22 80 25 44 44 33 C54 26 70 26 80 33 C99 44 101 80 90 106 Z"/>
+                        <path d="M46 34 L41 15 L57 30"/>
+                        <path d="M78 34 L83 15 L67 30"/>
+                        <circle class="dot" cx="52" cy="50" r="3"/>
+                        <circle class="dot" cx="70" cy="50" r="3"/>
+                        <path d="M58 56 L64 56 L61 61 Z"/>
+                        <path d="M40 54 L30 52 M40 58 L31 60 M82 54 L92 52 M82 58 L91 60"/>
+                        <path d="M54 72 L58 76 L62 72 M62 72 L66 76 L70 72"/>
+                        <path d="M86 103 C94 106 96 99 92 95"/>
+                    </g></svg></div>
+                    <div class="sk-meta">
+                        <div class="sk-yr">1988 · Hayao Miyazaki</div>
+                        <div class="sk-title">My Neighbour Totoro</div>                    </div>
                 </div>
             </div>
         </div>
@@ -1116,73 +1165,61 @@
             </div>
 
             <div class="films-grid">
-                <div class="film-card">
-                    <div class="film-art splendid-art">
-                        <div class="rays"></div>
-                        <div class="sun s2"></div>
-                        <div class="sun s3"></div>
-                        <div class="sun"></div>
-                        <div class="skyline"></div>
-                        <div class="dome d1"></div>
-                        <div class="dome d2"></div>
-                        <div class="dome d3"></div>
-                    </div>
-                    <div class="film-meta">
-                        <span class="film-year">2007 · Khaled Hosseini</span>
-                        <h3 class="film-title">A Thousand Splendid Suns</h3>
-                    </div>
+                <div class="sk-card">
+                    <svg class="sk-frame" viewBox="0 0 100 133" preserveAspectRatio="none"><path filter="url(#rough)" d="M6 6 L94 5 L95 128 L5 127 Z"/></svg>
+                    <div class="sk-art"><svg viewBox="0 0 120 120"><g filter="url(#rough)">
+                        <circle cx="60" cy="46" r="17"/>
+                        <path d="M60 24 L60 13 M60 68 L60 79 M82 46 L93 46 M38 46 L27 46 M75 31 L83 23 M45 31 L37 23 M75 61 L83 69 M45 61 L37 69"/>
+                        <path d="M8 98 q26 -22 52 -2 q26 20 52 -4"/>
+                        <path d="M8 108 q26 -16 52 0 q26 14 52 -2"/>
+                    </g></svg></div>
+                    <div class="sk-meta">
+                        <div class="sk-yr">2007 · Khaled Hosseini</div>
+                        <div class="sk-title">A Thousand Splendid Suns</div>                    </div>
                 </div>
 
-                <div class="film-card">
-                    <div class="film-art prince-art">
-                        <div class="stars"></div>
-                        <div class="moon"></div>
-                        <div class="planet"></div>
-                        <div class="rose"></div>
-                        <div class="prince">
-                            <div class="coat"></div>
-                            <svg class="scarf" viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <!-- tail first, then the neck wrap on top so the join is always covered -->
-                                <path d="M50,32 C68,24 84,34 102,24 C110,20 116,23 118,19" stroke="#d76a5c" stroke-width="12" stroke-linecap="round"/>
-                                <rect x="24" y="23" width="38" height="17" rx="8.5" fill="#d76a5c"/>
-                            </svg>
-                            <div class="head"></div>
-                            <div class="hair"></div>
-                        </div>
-                    </div>
-                    <div class="film-meta">
-                        <span class="film-year">1943 · Antoine de Saint-Exupéry</span>
-                        <h3 class="film-title">The Little Prince</h3>
-                    </div>
+                <div class="sk-card">
+                    <svg class="sk-frame" viewBox="0 0 100 133" preserveAspectRatio="none"><path filter="url(#rough)" d="M5 6 L95 5 L94 128 L6 127 Z"/></svg>
+                    <div class="sk-art"><svg viewBox="0 0 120 120"><g filter="url(#rough)">
+                        <path d="M22 104 q38 -26 76 0"/>
+                        <circle cx="60" cy="48" r="9"/>
+                        <path d="M54 40 q6 -10 12 0"/>
+                        <path d="M60 57 L55 84 L65 84 L60 57"/>
+                        <path d="M56 64 L42 70 M64 64 L78 70"/>
+                        <path d="M52 58 q8 5 16 0"/>
+                        <path d="M68 58 q12 0 17 8 q-8 2 -14 -2"/>
+                        <path d="M24 24 l0 10 M19 29 l10 0"/>
+                        <path d="M92 30 l0 8 M88 34 l8 0"/>
+                    </g></svg></div>
+                    <div class="sk-meta">
+                        <div class="sk-yr">1943 · Antoine de Saint-Exupéry</div>
+                        <div class="sk-title">The Little Prince</div>                    </div>
                 </div>
 
-                <div class="film-card">
-                    <div class="film-art alchemist-art">
-                        <div class="stars"></div>
-                        <div class="sun"></div>
-                        <div class="pyramid p2"></div>
-                        <div class="pyramid p1"></div>
-                        <div class="sand"></div>
-                    </div>
-                    <div class="film-meta">
-                        <span class="film-year">1988 · Paulo Coelho</span>
-                        <h3 class="film-title">The Alchemist</h3>
-                    </div>
+                <div class="sk-card">
+                    <svg class="sk-frame" viewBox="0 0 100 133" preserveAspectRatio="none"><path filter="url(#rough)" d="M6 5 L94 6 L95 128 L5 127 Z"/></svg>
+                    <div class="sk-art"><svg viewBox="0 0 120 120"><g filter="url(#rough)">
+                        <circle cx="84" cy="30" r="10"/>
+                        <path d="M84 13 L84 7 M101 30 L107 30 M71 17 L66 12 M97 17 L102 12"/>
+                        <path d="M24 98 L60 44 L96 98 Z"/>
+                        <path d="M42 98 L60 70 L78 98"/>
+                        <path d="M10 100 L110 100"/>
+                    </g></svg></div>
+                    <div class="sk-meta">
+                        <div class="sk-yr">1988 · Paulo Coelho</div>
+                        <div class="sk-title">The Alchemist</div>                    </div>
                 </div>
 
-                <div class="film-card">
-                    <div class="film-art pride-art">
-                        <div class="cameo">
-                            <div class="bust"></div>
-                        </div>
-                        <div class="sprig left"></div>
-                        <div class="sprig right"></div>
-                        <div class="frame"></div>
-                    </div>
-                    <div class="film-meta">
-                        <span class="film-year">1813 · Jane Austen</span>
-                        <h3 class="film-title">Pride and Prejudice</h3>
-                    </div>
+                <div class="sk-card">
+                    <svg class="sk-frame" viewBox="0 0 100 133" preserveAspectRatio="none"><path filter="url(#rough)" d="M5 6 L95 6 L94 127 L6 128 Z"/></svg>
+                    <div class="sk-art"><svg viewBox="0 0 120 120"><g filter="url(#rough)">
+                        <path d="M46 92 C58 64 64 40 80 20 C82 38 76 60 54 74"/>
+                        <path d="M72 30 L62 33 M68 40 L58 44 M64 50 L55 55 M60 60 L52 65"/>
+                        <path d="M36 96 C52 92 68 92 84 96"/>
+                    </g></svg></div>
+                    <div class="sk-meta">
+                        <div class="sk-yr">1813 · Jane Austen</div>
+                        <div class="sk-title">Pride and Prejudice</div>                    </div>
                 </div>
             </div>
         </div>
@@ -1338,6 +1375,28 @@
                 localStorage.setItem('theme', 'dark');
             }
         }
+    </script>
+
+    <!-- True-center each hand-drawn doodle: measure its real bounding box and
+         translate it so its centre lands at the viewBox centre (60,60). -->
+    <script>
+        (function () {
+            function centerSketches() {
+                document.querySelectorAll('.sk-art svg').forEach(function (svg) {
+                    var g = svg.querySelector('g');
+                    if (!g) return;
+                    g.removeAttribute('transform');      // measure the untransformed geometry
+                    var bb;
+                    try { bb = g.getBBox(); } catch (e) { return; }
+                    if (!bb || !bb.width) return;
+                    var dx = 60 - (bb.x + bb.width / 2);
+                    var dy = 60 - (bb.y + bb.height / 2);
+                    g.setAttribute('transform', 'translate(' + dx.toFixed(2) + ' ' + dy.toFixed(2) + ')');
+                });
+            }
+            centerSketches();
+            window.addEventListener('load', centerSketches);
+        })();
     </script>
 
     <!-- React (via CDN) powers the intro overlay and its enter transition -->
