@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Sanat Patki</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Apply saved theme before paint to avoid a flash -->
+    <script>
+        (function () {
+            var saved = localStorage.getItem('theme');
+            var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (saved === 'dark' || (!saved && prefersDark)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #0a0a0a;
+            --gray: #999999;
+            --border: #f0f0f0;
+            --surface: #f8f8f8;
+            --surface-alt: #fafafa;
+            --overlay: rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0b0b0c;
+            --text: #ededed;
+            --gray: #8a8a8a;
+            --border: #1c1c1e;
+            --surface: #151517;
+            --surface-alt: #141416;
+            --overlay: rgba(0, 0, 0, 0.65);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Header */
+        header {
+            padding: 60px 0 40px;
+            border-bottom: 1px solid var(--border);
+            opacity: 0;
+            animation: fadeInDown 0.8s ease forwards;
+        }
+
+        @keyframes fadeInDown {
+            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(-20px); }
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left { flex: 1; }
+
+        h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--gray);
+            margin-top: 8px;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            margin-left: 30px;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover { opacity: 0.5; }
+        nav a[aria-current="page"] { border-bottom: 1px solid var(--text); padding-bottom: 2px; }
+
+        .contact-link {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .contact-link a {
+            color: var(--text);
+            text-decoration: none;
+            border-bottom: 1px solid var(--text);
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-link a:hover { opacity: 0.5; }
+
+        /* Social Icons */
+        .social-icons { display: flex; gap: 16px; align-items: center; }
+        .social-icons a { color: var(--text); display: flex; align-items: center; transition: opacity 0.3s ease; }
+        .social-icons a:hover { opacity: 0.5; }
+        .social-icons svg { width: 20px; height: 20px; fill: currentColor; }
+
+        /* Theme toggle */
+        .theme-toggle {
+            background: none; border: none; padding: 0; cursor: pointer;
+            color: var(--text); display: flex; align-items: center; transition: opacity 0.3s ease;
+        }
+        .theme-toggle:hover { opacity: 0.5; }
+        .theme-toggle svg {
+            width: 20px; height: 20px; fill: none; stroke: currentColor;
+            stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+        }
+        .theme-toggle .sun { display: none; }
+        .theme-toggle .moon { display: block; }
+        [data-theme="dark"] .theme-toggle .sun { display: block; }
+        [data-theme="dark"] .theme-toggle .moon { display: none; }
+
+        /* Gallery Section */
+        .gallery-section { padding: 80px 0 120px; }
+
+        .section-header {
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(20px); }
+        }
+        @keyframes fadeIn { to { opacity: 1; } from { opacity: 0; } }
+
+        .section-header h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 400;
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
+        }
+        .section-header p { font-size: 1rem; color: var(--gray); }
+
+        /* Gallery grid — every tile is a uniform 4:3 */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            border-radius: 10px;
+            background: var(--surface);
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeIn 0.6s ease forwards;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .gallery-item:nth-child(1) { animation-delay: 0.10s; }
+        .gallery-item:nth-child(2) { animation-delay: 0.16s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.22s; }
+        .gallery-item:nth-child(4) { animation-delay: 0.28s; }
+        .gallery-item:nth-child(5) { animation-delay: 0.34s; }
+        .gallery-item:nth-child(6) { animation-delay: 0.40s; }
+        .gallery-item:nth-child(7) { animation-delay: 0.46s; }
+        .gallery-item:nth-child(8) { animation-delay: 0.52s; }
+
+        .gallery-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 22px 48px rgba(0, 0, 0, 0.22);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;      /* keeps the 4:3 crop clean at any size */
+            display: block;
+            transition: transform 0.5s ease, opacity 0.3s ease;
+        }
+
+        .gallery-item:hover img { transform: scale(1.04); }
+
+        .gallery-overlay {
+            position: absolute;
+            left: 0; right: 0; bottom: 0;
+            z-index: 2;
+            padding: 20px 18px 16px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.18) 60%, transparent);
+            color: #fff;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay { opacity: 1; transform: translateY(0); }
+
+        .gallery-place {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.66rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.85;
+        }
+
+        .gallery-caption {
+            font-family: 'Crimson Pro', serif;
+            font-weight: 600;
+            font-size: 1.25rem;
+            line-height: 1.15;
+            margin-top: 3px;
+            letter-spacing: -0.01em;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed; inset: 0; z-index: 1000;
+            display: none;
+            align-items: center; justify-content: center;
+            flex-direction: column;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.92);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox.open { display: flex; opacity: 1; }
+        .lightbox img {
+            max-width: 92vw;
+            max-height: 82vh;
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+        }
+        .lightbox-caption {
+            color: #fff;
+            margin-top: 18px;
+            text-align: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.04em;
+        }
+        .lightbox-close {
+            position: absolute; top: 24px; right: 28px;
+            background: none; border: none; cursor: pointer;
+            color: #fff; font-size: 2rem; line-height: 1; opacity: 0.8;
+            transition: opacity 0.2s ease;
+        }
+        .lightbox-close:hover { opacity: 1; }
+
+        /* Footer */
+        footer {
+            padding: 60px 0 40px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+        .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
+        .footer-links a { color: var(--text); text-decoration: none; transition: opacity 0.3s ease; }
+        .footer-links a:hover { opacity: 0.5; }
+        .footer-motto { margin-top: 10px; font-style: italic; }
+
+        @media (max-width: 900px) {
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+            .header-content { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .header-right { width: 100%; flex-direction: column; align-items: flex-start; gap: 15px; }
+            nav { display: flex; gap: 20px; }
+            nav a { margin-left: 0; }
+        }
+
+        @media (max-width: 540px) {
+            .gallery-grid { grid-template-columns: 1fr; gap: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>Sanat Patki</h1>
+                    <p class="tagline">CS + Math</p>
+                </div>
+                <div class="header-right">
+                    <nav>
+                        <a href="index.html">Home</a>
+                        <a href="projects.html">Projects</a>
+                        <a href="gallery.html" aria-current="page">Gallery</a>
+                    </nav>
+                    <div class="social-icons">
+                        <a href="https://linkedin.com/in/sanat-patki-85a817360" target="_blank" aria-label="LinkedIn">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                        <a href="https://github.com/SanatPatki" target="_blank" aria-label="GitHub">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
+                        <svg class="moon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                        <svg class="sun" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="4"/>
+                            <line x1="12" y1="2" x2="12" y2="4"/>
+                            <line x1="12" y1="20" x2="12" y2="22"/>
+                            <line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/>
+                            <line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/>
+                            <line x1="2" y1="12" x2="4" y2="12"/>
+                            <line x1="20" y1="12" x2="22" y2="12"/>
+                            <line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/>
+                            <line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/>
+                        </svg>
+                    </button>
+                    <div class="contact-link">
+                        <a href="mailto:sanatpatkiwork@gmail.com">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="gallery-section">
+            <div class="section-header">
+                <h2>Gallery</h2>
+                <p>Photos I've taken</p>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-item" data-full="photos/birdsonrock.jpg" data-place="Aquinnah Cliff" data-caption="Birds on the Rock">
+                    <img src="photos/birdsonrock.jpg" alt="Cormorants perched on a rock off Aquinnah Cliff" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-place">Aquinnah Cliff</div>
+                        <div class="gallery-caption">Birds on the Rock</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-full="photos/maritime.jpg" data-place="Aquatic Park, SF" data-caption="Maritime Museum">
+                    <img src="photos/maritime.jpg" alt="Maritime Museum overlooking the bay" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-place">Aquatic Park, SF</div>
+                        <div class="gallery-caption">Maritime Museum</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-full="photos/sfblock.jpg" data-place="Union Square, SF" data-caption="Looking Up">
+                    <img src="photos/sfblock.jpg" alt="Downtown San Francisco buildings from street level" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-place">Union Square, SF</div>
+                        <div class="gallery-caption">Looking Up</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-full="photos/dog.jpg" data-place="South Park, SF" data-caption="Good Boy">
+                    <img src="photos/dog.jpg" alt="A white dog sitting in the shade" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-place">South Park, SF</div>
+                        <div class="gallery-caption">Good Boy</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-full="photos/buggy.jpg" data-place="The Hills, SF" data-caption="Yellow GoCar">
+                    <img src="photos/buggy.jpg" alt="A yellow GoCar driving down a shaded road" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-place">The Hills, SF</div>
+                        <div class="gallery-caption">Yellow GoCar</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-full="photos/ships.jpg" data-place="Nantucket" data-caption="Harbor at Golden Hour">
+                    <img src="photos/ships.jpg" alt="Sailboats moored in Nantucket harbor at golden hour" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-place">Nantucket</div>
+                        <div class="gallery-caption">Harbor at Golden Hour</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-links">
+                <a href="mailto:sanatpatkiwork@gmail.com">Email</a>
+                <a href="https://linkedin.com/in/sanat-patki-85a817360" target="_blank">LinkedIn</a>
+                <a href="https://github.com/SanatPatki" target="_blank">GitHub</a>
+            </div>
+            <p>© 2024 Sanat Patki. All rights reserved.</p>
+            <p class="footer-motto">non est vivere sed valere vita est</p>
+        </footer>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+        <img id="lightbox-img" src="" alt="">
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            var el = document.documentElement;
+            if (el.getAttribute('data-theme') === 'dark') {
+                el.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            } else {
+                el.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Lightbox: click a photo to view it full size
+        (function () {
+            var lb = document.getElementById('lightbox');
+            var lbImg = document.getElementById('lightbox-img');
+            var lbCap = document.getElementById('lightbox-caption');
+            var closeBtn = document.getElementById('lightbox-close');
+
+            function open(full, place, caption) {
+                lbImg.src = full;
+                lbImg.alt = caption || '';
+                lbCap.textContent = caption ? (caption + (place ? ' — ' + place : '')) : (place || '');
+                lb.classList.add('open');
+                lb.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            }
+            function close() {
+                lb.classList.remove('open');
+                lb.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+                lbImg.src = '';
+            }
+
+            document.querySelectorAll('.gallery-item').forEach(function (item) {
+                item.addEventListener('click', function () {
+                    open(item.dataset.full, item.dataset.place, item.dataset.caption);
+                });
+            });
+            closeBtn.addEventListener('click', close);
+            lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+        })();
+    </script>
+</body>
+</html>
