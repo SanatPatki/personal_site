@@ -1026,7 +1026,7 @@
         .sk-yr { font-family: 'DM Mono', monospace; font-size: .58rem; letter-spacing: .09em; text-transform: uppercase; color: var(--gray); }
         .sk-title { font-family: 'Crimson Pro', serif; font-weight: 600; font-size: 1.02rem; line-height: 1.1; letter-spacing: -.01em; margin-top: 3px; color: var(--text); }
         /* Minimalist cosmos on the backmost layer:
-           twinkling starfield in dark mode, drifting black holes in light mode. */
+           twinkling starfield in dark mode, a faint dot field in light mode. */
         html { background: var(--bg); }
         body { background: transparent; }  /* html paints the bg; the cosmos canvas sits between */
         #cosmos { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; display: block; }
@@ -1575,7 +1575,7 @@
     </script>
 
     <!-- Minimalist cosmos behind the whole site:
-         twinkling starfield in dark mode, drifting black holes in light mode. -->
+         twinkling starfield in dark mode, a faint dot field in light mode. -->
     <script>
         (function () {
             var canvas = document.getElementById('cosmos');
