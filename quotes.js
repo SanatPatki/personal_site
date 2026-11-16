@@ -20,20 +20,16 @@
     var el = document.querySelector('.footer-motto');
     if (!el) return;
 
-    var i = Math.floor(Math.random() * quotes.length);
+    // Pick a random quote on each page load, avoiding the one shown last time.
+    var last = -1;
+    try { last = parseInt(localStorage.getItem('lastQuote'), 10); } catch (e) {}
 
-    function render() {
-        el.textContent = '“' + quotes[i][0] + '” — ' + quotes[i][1];
-    }
+    var i;
+    do {
+        i = Math.floor(Math.random() * quotes.length);
+    } while (i === last && quotes.length > 1);
 
-    render();
+    try { localStorage.setItem('lastQuote', String(i)); } catch (e) {}
 
-    setInterval(function () {
-        el.style.opacity = '0';
-        setTimeout(function () {
-            i = (i + 1) % quotes.length;
-            render();
-            el.style.opacity = '';
-        }, 600);
-    }, 8000);
+    el.textContent = '“' + quotes[i][0] + '” — ' + quotes[i][1];
 })();
