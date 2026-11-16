@@ -293,7 +293,7 @@
         .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
         .footer-links a { color: var(--text); text-decoration: none; transition: opacity 0.3s ease; }
         .footer-links a:hover { opacity: 0.5; }
-        .footer-motto { margin-top: 10px; font-style: italic; }
+        .footer-motto { margin-top: 10px; font-style: italic; min-height: 1.4em; transition: opacity 0.6s ease; }
 
         @media (max-width: 900px) {
             .gallery-grid { grid-template-columns: repeat(2, 1fr); }
@@ -432,7 +432,7 @@
                 <a href="https://github.com/SanatPatki" target="_blank">GitHub</a>
             </div>
             <p>© 2024 Sanat Patki. All rights reserved.</p>
-            <p class="footer-motto">non est vivere sed valere vita est</p>
+            <p class="footer-motto"></p>
         </footer>
     </div>
 
@@ -572,5 +572,6 @@
         })();
     </script>
 
+    <script src="quotes.js"></script>
 </body>
 </html>
